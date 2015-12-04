@@ -1,6 +1,14 @@
 # IISLogMuncher
 A small utility to report useful information about IIS logs.
 
+## Introduction
+
+## Example File
+
+## Usage
+
+## Example Output
+
 ## Technologies Used
 * C#
 * [CommandLine](https://github.com/cosmo0/commandline)
