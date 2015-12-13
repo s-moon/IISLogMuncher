@@ -15,33 +15,24 @@ namespace IISLogMuncher
         {
             logger.Info("IIS Log Muncher starting.");
 
-            int skipLines = 0;
+            List<String> modifiedArgs = new List<String>();
             int i = 0;
             while (i < args.Length)
             {
-                if (args[i][0] == '-')
+                if (args[i][0] == '-' && args[i].Length != 2)
                 {
-                    switch (args[i].Substring(0,2))
-                    {
-                        case "-s":
-                            if (i == args.Length || Int32.TryParse(args[++i], out skipLines) == false)
-                            {
-                                throw new ArgumentException("Missing or invalid split lines number.");
-                            }
-                            Console.WriteLine("-s option : " + skipLines);
-                            break;
-                        default:
-                            Console.WriteLine("Unknown option: " + args[i]);
-                            break;
-                    }
+                    modifiedArgs.Add(args[i].Substring(0, 2).ToLower());
+                    modifiedArgs.Add(args[i].Substring(2));
                 }
                 else
                 {
-                    // not an option with a hyphen
-                    Console.WriteLine("Filename: " + args[i]);
+                    modifiedArgs.Add(args[i]);
                 }
                 i++;
             }
+
+            foreach (var item in modifiedArgs)
+                Console.WriteLine("="+item);
 
             logger.Info("IIS Log Muncher finished.");
         }
