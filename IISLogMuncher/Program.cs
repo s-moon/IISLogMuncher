@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using CommandLine;
-using CommandLine.Text;
 using NLog;
 
 namespace IISLogMuncher
@@ -17,11 +15,24 @@ namespace IISLogMuncher
         {
             logger.Info("IIS Log Muncher starting.");
 
-            var result = CommandLine.Parser.Default.ParseArguments<Options>(args);
-            if (result.Errors.Count() == 0)
+            int skipLines = 0;
+            int i = 0;
+            while (i < args.Length)
             {
-                Console.WriteLine("Filenames: " + result.Value.InputFiles);
-                Console.WriteLine("Skip Lines: " + result.Value.SkipLines);
+                switch(args[i])
+                {
+                    case "-s":
+                        if (i == args.Length || Int32.TryParse(args[++i], out skipLines) == false)
+                        {
+                            throw new ArgumentException("Missing or invalid split lines number.");
+                        }
+                        Console.WriteLine("-s option : " + skipLines);
+                        break;
+                    default:
+                        Console.WriteLine("Filename: " + args[i]);
+                        break;
+                }
+                i++;
             }
 
             logger.Info("IIS Log Muncher finished.");
