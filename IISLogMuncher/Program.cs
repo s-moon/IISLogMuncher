@@ -19,18 +19,26 @@ namespace IISLogMuncher
             int i = 0;
             while (i < args.Length)
             {
-                switch(args[i])
+                if (args[i][0] == '-')
                 {
-                    case "-s":
-                        if (i == args.Length || Int32.TryParse(args[++i], out skipLines) == false)
-                        {
-                            throw new ArgumentException("Missing or invalid split lines number.");
-                        }
-                        Console.WriteLine("-s option : " + skipLines);
-                        break;
-                    default:
-                        Console.WriteLine("Filename: " + args[i]);
-                        break;
+                    switch (args[i].Substring(0,2))
+                    {
+                        case "-s":
+                            if (i == args.Length || Int32.TryParse(args[++i], out skipLines) == false)
+                            {
+                                throw new ArgumentException("Missing or invalid split lines number.");
+                            }
+                            Console.WriteLine("-s option : " + skipLines);
+                            break;
+                        default:
+                            Console.WriteLine("Unknown option: " + args[i]);
+                            break;
+                    }
+                }
+                else
+                {
+                    // not an option with a hyphen
+                    Console.WriteLine("Filename: " + args[i]);
                 }
                 i++;
             }
