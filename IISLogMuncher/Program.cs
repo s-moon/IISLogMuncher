@@ -19,10 +19,17 @@ namespace IISLogMuncher
             int i = 0;
             while (i < args.Length)
             {
-                if (args[i][0] == '-' && args[i].Length != 2)
+                if (args[i][0] == '-')
                 {
-                    modifiedArgs.Add(args[i].Substring(0, 2).ToLower());
-                    modifiedArgs.Add(args[i].Substring(2));
+                    if (args[i].Length != 2)
+                    {
+                        modifiedArgs.Add(args[i].Substring(0, 2).ToLower());
+                        modifiedArgs.Add(args[i].Substring(2));
+                    }
+                    else
+                    {
+                        modifiedArgs.Add(args[i].ToLower());
+                    }
                 }
                 else
                 {
