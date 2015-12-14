@@ -17,9 +17,6 @@ namespace IISLogMuncher
 
             var modifiedArgs = CommandLineProcessor.ProcessArgs(args);
 
-            Console.WriteLine(args[1]);
-            Console.WriteLine(modifiedArgs[1]);
-
             foreach (var item in modifiedArgs)
                 Console.WriteLine("="+item);
 

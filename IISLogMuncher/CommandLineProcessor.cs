@@ -12,6 +12,11 @@ namespace IISLogMuncher
 
         public static List<string> ProcessArgs(string[] args)
         {
+            return ReconstructArgs(args);
+        }
+
+        private static List<string> ReconstructArgs(string[] args)
+        {
             int i = 0;
             while (i < args.Length)
             {
