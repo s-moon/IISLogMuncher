@@ -6,12 +6,12 @@ using System.Threading.Tasks;
 
 namespace IISLogMuncher
 {
-    public static class CommandLineOptions
+    public class CommandLineOptions
     {
-        private static Dictionary<string, string> options = new Dictionary<string, string>();
-        private static List<string> loose = new List<string>();
+        private Dictionary<string, string> options = new Dictionary<string, string>();
+        private List<string> loose = new List<string>();
 
-        public static string GetOption(string name)
+        public string GetOption(string name)
         {
             if (options.ContainsKey(name))
             {
@@ -23,17 +23,17 @@ namespace IISLogMuncher
             }
         }
 
-        public static void SetOption(string name, string value)
+        public void SetOption(string name, string value)
         {
             options[name] = value;
         }
 
-        public static List<string> GetParameters()
+        public List<string> GetParameters()
         {
             return loose;
         }
 
-        public static void AddParameter(string param)
+        public void AddParameter(string param)
         {
             loose.Add(param);
         }
