@@ -10,9 +10,25 @@ namespace IISLogMuncher
     {
         private static List<string> modifiedArgs = new List<string>();
 
-        public static List<string> ProcessArgs(string[] args)
+        public static void ProcessArgs(string[] args)
         {
-            return ReconstructArgs(args);
+            var newArgs = ReconstructArgs(args);
+            for (int i = 0; i < newArgs.Count; i++)
+            {
+                switch(newArgs[i])
+                {
+                    case "-s":
+                        if (i >= newArgs.Count)
+                        {
+                            throw new ArgumentException("Missing option argument for 's'");
+                        }
+                        CommandLineOptions.SetOption("s", newArgs[++i]);
+                        break;
+                    default:
+                        CommandLineOptions.AddParameter(newArgs[i]);
+                        break;
+                }
+            }
         }
 
         private static List<string> ReconstructArgs(string[] args)

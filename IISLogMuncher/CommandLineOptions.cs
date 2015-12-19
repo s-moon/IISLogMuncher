@@ -11,7 +11,7 @@ namespace IISLogMuncher
         private static Dictionary<string, string> options = new Dictionary<string, string>();
         private static List<string> loose = new List<string>();
 
-        public static string Option(string name)
+        public static string GetOption(string name)
         {
             if (options.ContainsKey(name))
             {
@@ -21,6 +21,21 @@ namespace IISLogMuncher
             {
                 return string.Empty;
             }
+        }
+
+        public static void SetOption(string name, string value)
+        {
+            options[name] = value;
+        }
+
+        public static List<string> GetParameters()
+        {
+            return loose;
+        }
+
+        public static void AddParameter(string param)
+        {
+            loose.Add(param);
         }
     }
 }

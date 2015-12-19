@@ -15,10 +15,7 @@ namespace IISLogMuncher
         {
             logger.Info("IIS Log Muncher starting.");
 
-            var modifiedArgs = CommandLineProcessor.ProcessArgs(args);
-
-            foreach (var item in modifiedArgs)
-                Console.WriteLine("="+item);
+            CommandLineProcessor.ProcessArgs(args);
 
             logger.Info("IIS Log Muncher finished.");
         }
