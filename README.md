@@ -15,7 +15,6 @@ accessing certain resources on your site? This is the tool for you!
 
 ## Technologies Used
 * C#
-* [CommandLine](https://github.com/cosmo0/commandline)
 * [FileHelpers](https://github.com/MarcosMeli/FileHelpers)
 * [NLog](http://nlog-project.org/)
 * [NUnit](http://www.nunit.org/)
