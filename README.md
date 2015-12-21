@@ -1,5 +1,5 @@
 # IISLogMuncher
-A small utility to report useful information about IIS logs.
+A small Windows console utility to report useful information about IIS logs.
 
 ## Introduction
 
