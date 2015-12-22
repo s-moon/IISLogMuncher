@@ -10,14 +10,18 @@ namespace IISLogMuncher.Tests
     [TestFixture]
     public class CommandLineOptionsTests
     {
-        [Test]
-        public void LooseArgumentsEmptyOnSetup()
+        public class GetParametersMethod
         {
-            int expected = 0;
+            [Test]
+            public void LooseArgumentsEmptyOnSetup()
+            {
+                int expected = 0;
 
-            var clo = new CommandLineOptions();
+                var clo = new CommandLineOptions();
 
-            Assert.AreEqual(clo.GetParameters().Count, expected);
+                Assert.AreEqual(clo.GetParameters().Count, expected);
+            }
         }
+
     }
 }
