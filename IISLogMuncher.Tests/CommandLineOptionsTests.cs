@@ -15,10 +15,13 @@ namespace IISLogMuncher.Tests
             [Test]
             public void ReturnParameterList_IfNoneSupplied_ReturnEmptyList()
             {
+                // arrange
                 int expected = 0;
 
+                // act
                 var clo = new CommandLineOptions();
 
+                // assert
                 Assert.AreEqual(clo.GetParameters().Count, expected);
             }
         }
