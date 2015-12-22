@@ -13,7 +13,7 @@ namespace IISLogMuncher.Tests
         public class GetParametersMethod
         {
             [Test]
-            public void LooseArgumentsEmptyOnSetup()
+            public void ReturnUnassignedParameterList_IfNoneSupplied_ReturnEmptyList()
             {
                 int expected = 0;
 
