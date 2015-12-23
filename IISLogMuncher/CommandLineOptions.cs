@@ -8,8 +8,14 @@ namespace IISLogMuncher
 {
     public class CommandLineOptions
     {
-        private Dictionary<string, string> options = new Dictionary<string, string>();
-        private List<string> loose = new List<string>();
+        private Dictionary<string, string> options = null;
+        private List<string> nonOptions = null;
+
+        public CommandLineOptions()
+        {
+            options = new Dictionary<string, string>();
+            nonOptions = new List<string>();
+        }
 
         public string GetOption(string name)
         {
@@ -30,12 +36,12 @@ namespace IISLogMuncher
 
         public List<string> GetParameters()
         {
-            return loose;
+            return nonOptions;
         }
 
         public void AddParameter(string param)
         {
-            loose.Add(param);
+            nonOptions.Add(param);
         }
     }
 }
