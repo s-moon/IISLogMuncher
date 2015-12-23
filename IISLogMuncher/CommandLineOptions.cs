@@ -34,12 +34,12 @@ namespace IISLogMuncher
             options[name] = value;
         }
 
-        public List<string> GetParameters()
+        public List<string> GetNonOptions()
         {
             return nonOptions;
         }
 
-        public void AddParameter(string param)
+        public void AddNonOption(string param)
         {
             nonOptions.Add(param);
         }

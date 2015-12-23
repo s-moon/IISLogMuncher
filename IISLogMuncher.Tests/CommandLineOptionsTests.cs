@@ -34,7 +34,7 @@ namespace IISLogMuncher.Tests
                 int expected = 0;
 
                 // act
-                int result = clo.GetParameters().Count;
+                int result = clo.GetNonOptions().Count;
 
                 // assert
                 Assert.AreEqual(result, expected);
@@ -45,10 +45,10 @@ namespace IISLogMuncher.Tests
             {
                 // arrange
                 string expected = "arg1";
-                clo.AddParameter(expected);
+                clo.AddNonOption(expected);
 
                 // act
-                string result = clo.GetParameters().Single();
+                string result = clo.GetNonOptions().Single();
 
                 // assert
                 Assert.AreEqual(result, expected);
@@ -61,11 +61,11 @@ namespace IISLogMuncher.Tests
                 string a1 = "arg1";
                 string a2 = "arg2";
                 var expected = new List<string>(new[] { a1, a2 });
-                clo.AddParameter(a1);
-                clo.AddParameter(a2);
+                clo.AddNonOption(a1);
+                clo.AddNonOption(a2);
 
                 // act
-                var result = clo.GetParameters();
+                var result = clo.GetNonOptions();
 
                 // assert
                 CollectionAssert.AreEquivalent(expected, result);

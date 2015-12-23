@@ -26,7 +26,7 @@ namespace IISLogMuncher
                         clo.SetOption("s", newArgs[++i]);
                         break;
                     default:
-                        clo.AddParameter(newArgs[i]);
+                        clo.AddNonOption(newArgs[i]);
                         break;
                 }
             }
