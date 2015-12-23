@@ -12,7 +12,7 @@ namespace IISLogMuncher.Tests
     {
         public class GetParametersMethod
         {
-            [Test]
+            [Test] //   subject             scenario       result
             public void ReturnParameterList_IfNoneSupplied_ReturnEmptyList()
             {
                 // arrange
