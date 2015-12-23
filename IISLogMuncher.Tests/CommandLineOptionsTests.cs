@@ -10,14 +10,28 @@ namespace IISLogMuncher.Tests
     [TestFixture]
     public class CommandLineOptionsTests
     {
+
         public class GetParametersMethod
         {
+            CommandLineOptions clo;
+
+            [SetUp]
+            public void Init()
+            {
+                clo = new CommandLineOptions();
+            }
+
+            [TearDown]
+            public void Dispose()
+            {
+                clo = null;
+            }
+
             [Test] //   subject             scenario       result
             public void ReturnParameterList_IfNoneSupplied_ReturnEmptyList()
             {
                 // arrange
                 int expected = 0;
-                var clo = new CommandLineOptions();
 
                 // act
                 int result = clo.GetParameters().Count;
@@ -31,7 +45,6 @@ namespace IISLogMuncher.Tests
             {
                 // arrange
                 string expected = "arg1";
-                var clo = new CommandLineOptions();
                 clo.AddParameter(expected);
 
                 // act
@@ -48,7 +61,6 @@ namespace IISLogMuncher.Tests
                 string a1 = "arg1";
                 string a2 = "arg2";
                 var expected = new List<string>(new[] { a1, a2 });
-                var clo = new CommandLineOptions();
                 clo.AddParameter(a1);
                 clo.AddParameter(a2);
 
@@ -65,7 +77,6 @@ namespace IISLogMuncher.Tests
                 // arrange
                 string expected = "3";
                 string option = "s";
-                var clo = new CommandLineOptions();
                 clo.SetOption(option, expected);
 
                 // act
@@ -81,7 +92,6 @@ namespace IISLogMuncher.Tests
                 // arrange
                 string expected = String.Empty;
                 string option = "s";
-                var clo = new CommandLineOptions();
 
                 // act
                 string result = clo.GetOption(option);
