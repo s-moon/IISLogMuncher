@@ -10,8 +10,7 @@ namespace IISLogMuncher.Tests
     [TestFixture]
     public class CommandLineOptionsTests
     {
-
-        public class GetParametersMethod
+        public class ParametersMethod
         {
             CommandLineOptions clo;
 
@@ -70,6 +69,23 @@ namespace IISLogMuncher.Tests
                 // assert
                 CollectionAssert.AreEquivalent(expected, result);
             }
+        }
+
+        public class OptionsMethod
+        {
+            CommandLineOptions clo;
+
+            [SetUp]
+            public void Init()
+            {
+                clo = new CommandLineOptions();
+            }
+
+            [TearDown]
+            public void Dispose()
+            {
+                clo = null;
+            }
 
             [Test] //   subject      scenario       result
             public void ReturnOption_OptionSupplied_ValueReturnedForThatOption()
@@ -100,6 +116,5 @@ namespace IISLogMuncher.Tests
                 Assert.AreEqual(result, expected);
             }
         }
-
     }
 }
