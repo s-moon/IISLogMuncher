@@ -7,24 +7,20 @@ using System.Threading.Tasks;
 
 namespace IISLogMuncher.Tests
 {
+    [TestFixture]
     public class CommandLineProcessorTests
     {
-        [TestFixture]
-        public class CommandLineOptionsTests
+        public class ProcessArgsMethod
         {
-            public class TestMethod
+            [SetUp]
+            public void Init()
             {
-                [SetUp]
-                public void Init()
-                {
 
-                }
+            }
 
-                [TearDown]
-                public void Dispose()
-                {
-
-                }
+            [TearDown]
+            public void Dispose()
+            {
 
             }
         }
