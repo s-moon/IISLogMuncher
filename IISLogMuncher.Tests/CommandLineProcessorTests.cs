@@ -23,6 +23,31 @@ namespace IISLogMuncher.Tests
             {
 
             }
+
+            // Test empty args
+
+            // Test one non-option argument
+
+            // Test two non-option arguments
+
+            // Test one option with no associated argument
+
+            // Test one option with an associated argument
+
+            // Test one option with an associated argument next to it e.g. -s4
+
+            // Test two options (neither with associated arguments)
+
+            // Test two options, one of which has an associated argument and one doesn't
+
+            // Test two options (no associated arguments) and one non-option
+
+            // Test a non-option, option (no assoaciated argument) and a non-option
+
+            // Test an option, a non-option, and an option
+
+
+
         }
     }
 }
