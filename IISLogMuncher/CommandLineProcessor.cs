@@ -8,8 +8,6 @@ namespace IISLogMuncher
 {
     public static class CommandLineProcessor
     {
-        private static List<string> modifiedArgs = new List<string>();
-
         public static CommandLineOptions ProcessArgs(string[] args)
         {
             var clo = new CommandLineOptions();
@@ -36,6 +34,7 @@ namespace IISLogMuncher
         private static List<string> ReconstructArgs(string[] args)
         {
             int i = 0;
+            var modifiedArgs = new List<string>();
             while (i < args.Length)
             {
                 if (args[i][0] == '-')
