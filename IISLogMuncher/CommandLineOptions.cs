@@ -34,6 +34,11 @@ namespace IISLogMuncher
             options[name] = value;
         }
 
+        public int GetOptionCount()
+        {
+            return options.Count;
+        }
+
         public List<string> GetNonOptions()
         {
             return nonOptions;

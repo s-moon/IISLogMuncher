@@ -12,6 +12,8 @@ namespace IISLogMuncher.Tests
     {
         public class ProcessArgsMethod
         {
+            private CommandLineOptions clo;
+
             [SetUp]
             public void Init()
             {
@@ -25,6 +27,20 @@ namespace IISLogMuncher.Tests
             }
 
             // Test empty args
+            [Test]
+            public void ProcessArgs_NoneSupplied_NoneReturned()
+            {
+                // arrange
+                CommandLineOptions expected = new CommandLineOptions();
+                string[] args = { };
+
+                // act
+                clo = CommandLineProcessor.ProcessArgs(args);
+
+                // assert
+                Assert.AreEqual(expected.GetNonOptions().Count, clo.GetNonOptions().Count);
+                Assert.AreEqual(expected.GetOptionCount(), clo.GetOptionCount());
+            }
 
             // Test one non-option argument
 
