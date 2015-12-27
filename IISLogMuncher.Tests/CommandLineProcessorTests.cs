@@ -103,7 +103,25 @@ namespace IISLogMuncher.Tests
                 Assert.AreSame(expected.GetOption(nOArg1.Substring(1)), result.GetOption(nOArg1.Substring(1)));
             }
 
-            // Test one option with an associated argument next to it e.g. -s4
+            // Test one option with an associated argument next to it e.g. -s3
+            [Test]
+            public void ProcessArgs_OneOptionAndArgSuppliedNextToIt_OneOptionAndArgReturned()
+            {
+                // arrange
+                CommandLineOptions expected = new CommandLineOptions();
+                string nOArg1 = "-s";
+                string nOArg1Value = "3";
+                expected.SetOption(nOArg1.Substring(1), nOArg1Value);
+                string[] args = { nOArg1 + nOArg1Value };
+
+                // act
+                result = CommandLineProcessor.ProcessArgs(args);
+
+                // assert
+                Assert.AreEqual(expected.GetNonOptions().Count(), result.GetNonOptions().Count());
+                Assert.AreEqual(expected.GetOptionCount(), result.GetOptionCount());
+                Assert.AreEqual(expected.GetOption(nOArg1.Substring(1)), result.GetOption(nOArg1.Substring(1)));
+            }
 
             // Test two options (neither with associated arguments)
 
