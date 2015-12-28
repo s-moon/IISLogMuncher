@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace IISLogMuncher
 {
-    public static class CommandLineProcessor
+    public class CommandLineProcessor
     {
-        public static CommandLineOptions ProcessArgs(string[] args)
+        public CommandLineOptions ProcessArgs(string[] args)
         {
             var clo = new CommandLineOptions();
             var newArgs = ReconstructArgs(args);
@@ -31,7 +31,7 @@ namespace IISLogMuncher
             return clo;
         }
 
-        private static List<string> ReconstructArgs(string[] args)
+        private List<string> ReconstructArgs(string[] args)
         {
             int i = 0;
             var modifiedArgs = new List<string>();

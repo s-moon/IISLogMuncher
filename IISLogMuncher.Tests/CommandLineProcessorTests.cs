@@ -13,17 +13,19 @@ namespace IISLogMuncher.Tests
         public class ProcessArgsMethod
         {
             private CommandLineOptions result;
+            private CommandLineProcessor clp;
 
             [SetUp]
             public void Init()
             {
-
+                clp = new CommandLineProcessor();
             }
 
             [TearDown]
             public void Dispose()
             {
                 result = null;
+                clp = null;
             }
 
             // Test empty args
@@ -35,7 +37,7 @@ namespace IISLogMuncher.Tests
                 string[] args = { };
 
                 // act
-                result = CommandLineProcessor.ProcessArgs(args);
+                result = clp.ProcessArgs(args);
 
                 // assert
                 Assert.AreEqual(expected.GetNonOptions().Count, result.GetNonOptions().Count);
@@ -53,7 +55,7 @@ namespace IISLogMuncher.Tests
                 string[] args = { nOArg1 };
 
                 // act
-                result = CommandLineProcessor.ProcessArgs(args);
+                result = clp.ProcessArgs(args);
 
                 // assert
                 Assert.AreEqual(expected.GetNonOptions().Single(), result.GetNonOptions().Single());
@@ -73,7 +75,7 @@ namespace IISLogMuncher.Tests
                 string[] args = { nOArg1, nOArg2 };
 
                 // act
-                result = CommandLineProcessor.ProcessArgs(args);
+                result = clp.ProcessArgs(args);
 
                 // assert
                 Assert.AreEqual(expected.GetNonOptions().Count(), result.GetNonOptions().Count());
@@ -95,7 +97,7 @@ namespace IISLogMuncher.Tests
                 string[] args = { nOArg1, nOArg1Value };
 
                 // act
-                result = CommandLineProcessor.ProcessArgs(args);
+                result = clp.ProcessArgs(args);
 
                 // assert
                 Assert.AreEqual(expected.GetNonOptions().Count(), result.GetNonOptions().Count());
@@ -115,7 +117,7 @@ namespace IISLogMuncher.Tests
                 string[] args = { nOArg1 + nOArg1Value };
 
                 // act
-                result = CommandLineProcessor.ProcessArgs(args);
+                result = clp.ProcessArgs(args);
 
                 // assert
                 Assert.AreEqual(expected.GetNonOptions().Count(), result.GetNonOptions().Count());
