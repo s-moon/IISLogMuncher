@@ -15,7 +15,7 @@ namespace IISLogMuncher
         {
             logger.Info("IIS Log Muncher starting.");
 
-            var clp = new CommandLineProcessor();
+            var clp = new CommandLineProcessor("s:");
             var clo = clp.ProcessArgs(args);
 
             logger.Info("IIS Log Muncher finished.");

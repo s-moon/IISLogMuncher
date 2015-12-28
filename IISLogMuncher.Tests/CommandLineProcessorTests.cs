@@ -18,7 +18,7 @@ namespace IISLogMuncher.Tests
             [SetUp]
             public void Init()
             {
-                clp = new CommandLineProcessor();
+                clp = new CommandLineProcessor("s:abcde");
             }
 
             [TearDown]
