@@ -8,6 +8,18 @@ namespace IISLogMuncher
 {
     public class CommandLineProcessor
     {
+        public CommandLineProcessor()
+        {
+
+        }
+
+        public CommandLineProcessor(string options)
+        {
+            Options = options;
+        }
+
+        public string Options { get; set; }
+
         public CommandLineOptions ProcessArgs(string[] args)
         {
             var clo = new CommandLineOptions();
