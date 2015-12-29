@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NLog;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,6 +9,7 @@ namespace IISLogMuncher
 {
     public class CommandLineProcessor
     {
+        private static Logger logger = LogManager.GetCurrentClassLogger();
         private Dictionary<string, string> optionDictionary = null;
         private const char OPTION_INDICATOR = '-';
         private const char OPTION_ARGUMENT = ':';
@@ -23,7 +25,9 @@ namespace IISLogMuncher
         {
             if (options == null)
             {
-                throw new ArgumentException("Options must be non-null.");
+                string message = "Options must be non-null.";
+                logger.Error(message);
+                throw new ArgumentException(message);
             }
             Options = options;
         }
@@ -38,7 +42,9 @@ namespace IISLogMuncher
             {
                 if (value == null)
                 {
-                    throw new ArgumentException("Options must be non-null.");
+                    string message = "Options must be non-null.";
+                    logger.Error(message);
+                    throw new ArgumentException(message);
                 }
                 _options = value;
                 if (optionDictionary != null)
@@ -55,7 +61,6 @@ namespace IISLogMuncher
             var od = new Dictionary<string, string>();
             for (int i = 0; i < Options.Length; i++)
             {
-                // todo: use constants
                 if (i < Options.Length - 1 && Options[i + 1] == OPTION_ARGUMENT)
                 {
                     od.Add(Options[i++].ToString(), OPTION_ARGUMENT.ToString());
@@ -86,7 +91,9 @@ namespace IISLogMuncher
                         {
                             if (i >= newArgs.Count - 1)
                             {
-                                throw new ArgumentException("Missing argument for: " + optionCharacter);
+                                string message = "Missing argument for: " + optionCharacter;
+                                logger.Error(message);
+                                throw new ArgumentException(message);
                             }
                             else
                             {
@@ -100,7 +107,9 @@ namespace IISLogMuncher
                     }
                     else
                     {
-                        throw new ArgumentException("Unknown option: " + optionCharacter);
+                        string message = "Unknown option: " + optionCharacter;
+                        logger.Error(message);
+                        throw new ArgumentException(message);
                     }
                 }
                 else
@@ -148,7 +157,11 @@ namespace IISLogMuncher
         private bool isOption(string option)
         {
             if (optionDictionary == null)
-                throw new ArgumentException("No options defined.");
+            {
+                string message = "No options defined.";
+                logger.Error(message);
+                throw new ArgumentException(message);
+            }
             else
                 return optionDictionary.ContainsKey(option);
         }
