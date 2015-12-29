@@ -16,22 +16,6 @@ namespace IISLogMuncher
         private const char OPTION_NO_ARGUMENT = 'X';
         private string _options;
 
-        public CommandLineProcessor()
-        {
-            Options = string.Empty;
-        }
-
-        public CommandLineProcessor(string options)
-        {
-            if (options == null)
-            {
-                string message = "Options must be non-null.";
-                logger.Error(message);
-                throw new ArgumentException(message);
-            }
-            Options = options;
-        }
-
         public string Options
         {
             get
@@ -56,21 +40,20 @@ namespace IISLogMuncher
             }
         }
 
-        private Dictionary<string, string> buildOptionDictionary(string value)
+        public CommandLineProcessor()
         {
-            var od = new Dictionary<string, string>();
-            for (int i = 0; i < Options.Length; i++)
+            Options = string.Empty;
+        }
+
+        public CommandLineProcessor(string options)
+        {
+            if (options == null)
             {
-                if (i < Options.Length - 1 && Options[i + 1] == OPTION_ARGUMENT)
-                {
-                    od.Add(Options[i++].ToString(), OPTION_ARGUMENT.ToString());
-                }
-                else
-                {
-                    od.Add(Options[i].ToString(), OPTION_ARGUMENT.ToString());
-                }
+                string message = "Options must be non-null.";
+                logger.Error(message);
+                throw new ArgumentException(message);
             }
-            return od;
+            Options = options;
         }
 
         public CommandLineOptions ProcessArgs(string[] args)
@@ -118,6 +101,23 @@ namespace IISLogMuncher
                 }
             }
             return clo;
+        }
+
+        private Dictionary<string, string> buildOptionDictionary(string value)
+        {
+            var od = new Dictionary<string, string>();
+            for (int i = 0; i < Options.Length; i++)
+            {
+                if (i < Options.Length - 1 && Options[i + 1] == OPTION_ARGUMENT)
+                {
+                    od.Add(Options[i++].ToString(), OPTION_ARGUMENT.ToString());
+                }
+                else
+                {
+                    od.Add(Options[i].ToString(), OPTION_ARGUMENT.ToString());
+                }
+            }
+            return od;
         }
 
         /// <summary>
