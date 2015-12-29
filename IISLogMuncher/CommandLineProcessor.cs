@@ -18,6 +18,10 @@ namespace IISLogMuncher
 
         public CommandLineProcessor(string options)
         {
+            if (options == null)
+            {
+                throw new ArgumentException("Options must be non-null.");
+            }
             Options = options;
         }
 
@@ -29,6 +33,10 @@ namespace IISLogMuncher
             }
             set
             {
+                if (value == null)
+                {
+                    throw new ArgumentException("Options must be non-null.");
+                }
                 _options = value;
                 if (optionDictionary != null)
                 {
@@ -44,6 +52,7 @@ namespace IISLogMuncher
             var od = new Dictionary<string, string>();
             for (int i = 0; i < Options.Length; i++)
             {
+                // todo: use constants
                 if (i < Options.Length - 1 && Options[i + 1] == ':')
                 {
                     od.Add(Options[i++].ToString(), "Y");
@@ -59,59 +68,75 @@ namespace IISLogMuncher
         public CommandLineOptions ProcessArgs(string[] args)
         {
             var clo = new CommandLineOptions();
-            var newArgs = ReconstructArgs(args);
+            var newArgs = reconstructSquashedArgumentsIntoSpacedArguments(args);
             for (int i = 0; i < newArgs.Count; i++)
             {
-                switch (newArgs[i].Substring(0, 1))
+                if (string.IsNullOrEmpty(newArgs[i]))
+                    continue;
+
+                if (newArgs[i].Substring(0, 1) == "-" && newArgs[i].Length > 1)
                 {
-                    case "-":
-                        if (isOption(newArgs[i].Substring(1, 1)))
+                    string optionCharacter = newArgs[i].Substring(1, 1);
+                    if (isOption(optionCharacter))
+                    {
+                        if (expectsOptionArgument(optionCharacter))
                         {
-                            if (expectsOptionArgument(newArgs[i].Substring(1, 1)))
+                            if (i >= newArgs.Count - 1)
                             {
-                                if (i >= newArgs.Count - 1)
-                                {
-                                    throw new ArgumentException("Missing argument for: " + newArgs[i].Substring(1, 1));
-                                }
-                                clo.SetOption(newArgs[i].Substring(1, 1), newArgs[++i]);
+                                throw new ArgumentException("Missing argument for: " + optionCharacter);
                             }
                             else
                             {
-                                clo.SetOption(newArgs[i].Substring(1, 1), "");
+                                clo.SetOption(optionCharacter, newArgs[++i]);
                             }
                         }
-                        break;
-                    default:
-                        clo.AddNonOption(newArgs[i]);
-                        break;
+                        else
+                        {
+                            clo.SetOption(optionCharacter, string.Empty);
+                        }
+                    }
+                    else
+                    {
+                        throw new ArgumentException("Unknown option: " + optionCharacter);
+                    }
+                }
+                else
+                {
+                    clo.AddNonOption(newArgs[i]);
                 }
             }
             return clo;
         }
 
-        private List<string> ReconstructArgs(string[] args)
+        /// <summary>
+        /// Changes arguments of this form: -s3 into: -s 3
+        /// </summary>
+        /// <param name="args"></param>
+        /// <returns></returns>
+        private List<string> reconstructSquashedArgumentsIntoSpacedArguments(string[] args)
         {
-            int i = 0;
             var modifiedArgs = new List<string>();
-            while (i < args.Length)
+            for (int i = 0; i < args.Length; i++)
             {
-                if (args[i][0] == '-')
+                if (!string.IsNullOrEmpty(args[i]))
                 {
-                    if (args[i].Length != 2)
+                    if (args[i][0] == '-')
                     {
-                        modifiedArgs.Add(args[i].Substring(0, 2).ToLower());
-                        modifiedArgs.Add(args[i].Substring(2));
+                        if (args[i].Length > 2)
+                        {
+                            modifiedArgs.Add(args[i].Substring(0, 2));
+                            modifiedArgs.Add(args[i].Substring(2));
+                        }
+                        else
+                        {
+                            modifiedArgs.Add(args[i]);
+                        }
                     }
                     else
                     {
-                        modifiedArgs.Add(args[i].ToLower());
+                        modifiedArgs.Add(args[i]);
                     }
                 }
-                else
-                {
-                    modifiedArgs.Add(args[i]);
-                }
-                i++;
             }
 
             return modifiedArgs;
