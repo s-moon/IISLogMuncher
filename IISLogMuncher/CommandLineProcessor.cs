@@ -9,6 +9,9 @@ namespace IISLogMuncher
     public class CommandLineProcessor
     {
         private Dictionary<string, string> optionDictionary = null;
+        private const char OPTION_INDICATOR = '-';
+        private const char OPTION_ARGUMENT = ':';
+        private const char OPTION_NO_ARGUMENT = 'X';
         private string _options;
 
         public CommandLineProcessor()
@@ -53,13 +56,13 @@ namespace IISLogMuncher
             for (int i = 0; i < Options.Length; i++)
             {
                 // todo: use constants
-                if (i < Options.Length - 1 && Options[i + 1] == ':')
+                if (i < Options.Length - 1 && Options[i + 1] == OPTION_ARGUMENT)
                 {
-                    od.Add(Options[i++].ToString(), "Y");
+                    od.Add(Options[i++].ToString(), OPTION_ARGUMENT.ToString());
                 }
                 else
                 {
-                    od.Add(Options[i].ToString(), "N");
+                    od.Add(Options[i].ToString(), OPTION_ARGUMENT.ToString());
                 }
             }
             return od;
@@ -74,7 +77,7 @@ namespace IISLogMuncher
                 if (string.IsNullOrEmpty(newArgs[i]))
                     continue;
 
-                if (newArgs[i].Substring(0, 1) == "-" && newArgs[i].Length > 1)
+                if (newArgs[i].Substring(0, 1) == OPTION_INDICATOR.ToString() && newArgs[i].Length > 1)
                 {
                     string optionCharacter = newArgs[i].Substring(1, 1);
                     if (isOption(optionCharacter))
@@ -92,7 +95,7 @@ namespace IISLogMuncher
                         }
                         else
                         {
-                            clo.SetOption(optionCharacter, string.Empty);
+                            clo.SetOption(optionCharacter, OPTION_NO_ARGUMENT.ToString());
                         }
                     }
                     else
@@ -109,7 +112,7 @@ namespace IISLogMuncher
         }
 
         /// <summary>
-        /// Changes arguments of this form: -s3 into: -s 3
+        /// Changes arguments of this form: -s3 into: -s 3 
         /// </summary>
         /// <param name="args"></param>
         /// <returns></returns>
@@ -120,7 +123,7 @@ namespace IISLogMuncher
             {
                 if (!string.IsNullOrEmpty(args[i]))
                 {
-                    if (args[i][0] == '-')
+                    if (args[i][0] == OPTION_INDICATOR)
                     {
                         if (args[i].Length > 2)
                         {
@@ -144,7 +147,10 @@ namespace IISLogMuncher
 
         private bool isOption(string option)
         {
-            return optionDictionary.ContainsKey(option);
+            if (optionDictionary == null)
+                throw new ArgumentException("No options defined.");
+            else
+                return optionDictionary.ContainsKey(option);
         }
 
         private bool expectsOptionArgument(string option)
@@ -153,9 +159,10 @@ namespace IISLogMuncher
             {
                 return false;
             }
+
             string value = string.Empty;
             optionDictionary.TryGetValue(option, out value);
-            return (value == "Y");
+            return (value == OPTION_ARGUMENT.ToString());
         }
     }
 }
