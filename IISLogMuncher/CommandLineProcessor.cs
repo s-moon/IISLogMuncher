@@ -14,13 +14,13 @@ namespace IISLogMuncher
         private const char OPTION_INDICATOR = '-';
         private const char OPTION_ARGUMENT = ':';
         private const char OPTION_NO_ARGUMENT = 'X';
-        private string _options;
+        private string options;
 
         public string Options
         {
             get
             {
-                return _options;
+                return options;
             }
             set
             {
@@ -30,7 +30,7 @@ namespace IISLogMuncher
                     logger.Error(message);
                     throw new ArgumentException(message);
                 }
-                _options = value;
+                options = value;
                 if (optionDictionary != null)
                 {
                     optionDictionary.Clear();
