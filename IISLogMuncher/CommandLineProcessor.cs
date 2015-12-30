@@ -38,11 +38,18 @@ namespace IISLogMuncher
             }
         }
 
+        /// <summary>
+        /// A standard object will have no options.
+        /// </summary>
         public CommandLineProcessor()
         {
             Options = string.Empty;
         }
 
+        /// <summary>
+        /// Supply a list of options to initialise with. E.g. "s:hv"
+        /// </summary>
+        /// <param name="options"></param>
         public CommandLineProcessor(string options)
         {
             if (options != null)
@@ -55,9 +62,13 @@ namespace IISLogMuncher
                 logger.Error(message);
                 throw new ArgumentException(message);
             }
-            
         }
 
+        /// <summary>
+        /// Given an array of arguments, process them by building a dictionary of valid options and their arguments
+        /// </summary>
+        /// <param name="args"></param>
+        /// <returns></returns>
         public CommandLineOptions ProcessArgs(string[] args)
         {
             var newArgs = reconstructSquashedArgumentsIntoSpacedArguments(args);
@@ -103,6 +114,11 @@ namespace IISLogMuncher
             return clo;
         }
 
+        /// <summary>
+        /// Does this argument begin with the option character (-)?
+        /// </summary>
+        /// <param name="v"></param>
+        /// <returns></returns>
         private bool couldBeAnOption(string v)
         {
             if (!string.IsNullOrEmpty(v) && 
@@ -112,6 +128,11 @@ namespace IISLogMuncher
                 return false;
         }
 
+        /// <summary>
+        /// Creates a dictionary made up with the list of possible options and whether they take arguments
+        /// </summary>
+        /// <param name="listOfOptions"></param>
+        /// <returns></returns>
         private Dictionary<char, string> buildOptionDictionary(string listOfOptions)
         {
             var od = new Dictionary<char, string>();
@@ -163,6 +184,11 @@ namespace IISLogMuncher
             return modifiedArgs;
         }
 
+        /// <summary>
+        /// Does this option exist in our dictionary of valid options?
+        /// </summary>
+        /// <param name="option"></param>
+        /// <returns></returns>
         private bool isKnownOption(char option)
         {
             if (optionDictionary != null)
@@ -177,6 +203,11 @@ namespace IISLogMuncher
             }
         }
 
+        /// <summary>
+        /// Does this option need an argument to go with it?
+        /// </summary>
+        /// <param name="option"></param>
+        /// <returns></returns>
         private bool expectsOptionArgument(char option)
         {
             if (isKnownOption(option))

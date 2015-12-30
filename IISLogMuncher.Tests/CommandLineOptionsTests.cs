@@ -106,11 +106,11 @@ namespace IISLogMuncher.Tests
             public void ReturnOption_OptionNotSupplied_ValueReturnedIsEmptyString()
             {
                 // arrange
-                string expected = String.Empty;
+                bool expected = false;
                 char option = 's';
 
                 // act
-                string result = clo.GetOption(option);
+                bool result = clo.IsOptionSet(option);
 
                 // assert
                 Assert.AreEqual(result, expected);
