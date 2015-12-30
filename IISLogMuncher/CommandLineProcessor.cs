@@ -10,7 +10,7 @@ namespace IISLogMuncher
     public class CommandLineProcessor
     {
         private static Logger logger = LogManager.GetCurrentClassLogger();
-        private Dictionary<string, string> optionDictionary = null;
+        private Dictionary<char, string> optionDictionary = null;
         private const char OPTION_INDICATOR = '-';
         private const char OPTION_ARGUMENT = ':';
         private const char OPTION_NO_ARGUMENT = 'X';
@@ -30,13 +30,9 @@ namespace IISLogMuncher
                     logger.Error(message);
                     throw new ArgumentException(message);
                 }
+
                 options = value;
-                if (optionDictionary != null)
-                {
-                    optionDictionary.Clear();
-                    optionDictionary = null;
-                }
-                optionDictionary = buildOptionDictionary(Options);
+                optionDictionary = buildOptionDictionary(options);
             }
         }
 
@@ -60,15 +56,13 @@ namespace IISLogMuncher
         {
             var clo = new CommandLineOptions();
             var newArgs = reconstructSquashedArgumentsIntoSpacedArguments(args);
+
             for (int i = 0; i < newArgs.Count; i++)
             {
-                if (string.IsNullOrEmpty(newArgs[i]))
-                    continue;
-
-                if (newArgs[i].Substring(0, 1) == OPTION_INDICATOR.ToString() && newArgs[i].Length > 1)
+                if (couldBeAnOption(newArgs[i]) && newArgs[i].Length > 1)
                 {
-                    string optionCharacter = newArgs[i].Substring(1, 1);
-                    if (isOption(optionCharacter))
+                    char optionCharacter = newArgs[i].ElementAt(1);
+                    if (isKnownOption(optionCharacter))
                     {
                         if (expectsOptionArgument(optionCharacter))
                         {
@@ -103,18 +97,27 @@ namespace IISLogMuncher
             return clo;
         }
 
-        private Dictionary<string, string> buildOptionDictionary(string value)
+        private bool couldBeAnOption(string v)
         {
-            var od = new Dictionary<string, string>();
-            for (int i = 0; i < Options.Length; i++)
+            if (!string.IsNullOrEmpty(v) && 
+                    v.ElementAt(0) == OPTION_INDICATOR)
+                return true;
+            else
+                return false;
+        }
+
+        private Dictionary<char, string> buildOptionDictionary(string listOfOptions)
+        {
+            var od = new Dictionary<char, string>();
+            for (int i = 0; i < listOfOptions.Length; i++)
             {
-                if (i < Options.Length - 1 && Options[i + 1] == OPTION_ARGUMENT)
+                if (i < listOfOptions.Length - 1 && Options[i + 1] == OPTION_ARGUMENT)
                 {
-                    od.Add(Options[i++].ToString(), OPTION_ARGUMENT.ToString());
+                    od.Add(listOfOptions.ElementAt(i++), OPTION_ARGUMENT.ToString());
                 }
                 else
                 {
-                    od.Add(Options[i].ToString(), OPTION_ARGUMENT.ToString());
+                    od.Add(listOfOptions.ElementAt(i), OPTION_ARGUMENT.ToString());
                 }
             }
             return od;
@@ -154,7 +157,7 @@ namespace IISLogMuncher
             return modifiedArgs;
         }
 
-        private bool isOption(string option)
+        private bool isKnownOption(char option)
         {
             if (optionDictionary == null)
             {
@@ -166,9 +169,9 @@ namespace IISLogMuncher
                 return optionDictionary.ContainsKey(option);
         }
 
-        private bool expectsOptionArgument(string option)
+        private bool expectsOptionArgument(char option)
         {
-            if (!isOption(option))
+            if (!isKnownOption(option))
             {
                 return false;
             }

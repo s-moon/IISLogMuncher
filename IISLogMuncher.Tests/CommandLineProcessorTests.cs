@@ -93,7 +93,7 @@ namespace IISLogMuncher.Tests
                 CommandLineOptions expected = new CommandLineOptions();
                 string nOArg1 = "-s";
                 string nOArg1Value = "3";
-                expected.SetOption(nOArg1.Substring(1), nOArg1Value);
+                expected.SetOption(nOArg1.ElementAt(1), nOArg1Value);
                 string[] args = { nOArg1, nOArg1Value };
 
                 // act
@@ -102,7 +102,7 @@ namespace IISLogMuncher.Tests
                 // assert
                 Assert.AreEqual(expected.GetNonOptions().Count(), result.GetNonOptions().Count());
                 Assert.AreEqual(expected.GetOptionCount(), result.GetOptionCount());
-                Assert.AreSame(expected.GetOption(nOArg1.Substring(1)), result.GetOption(nOArg1.Substring(1)));
+                Assert.AreSame(expected.GetOption(nOArg1.ElementAt(1)), result.GetOption(nOArg1.ElementAt(1)));
             }
 
             // Test one option with an associated argument next to it e.g. -s3
@@ -113,7 +113,7 @@ namespace IISLogMuncher.Tests
                 CommandLineOptions expected = new CommandLineOptions();
                 string nOArg1 = "-s";
                 string nOArg1Value = "3";
-                expected.SetOption(nOArg1.Substring(1), nOArg1Value);
+                expected.SetOption(nOArg1.ElementAt(1), nOArg1Value);
                 string[] args = { nOArg1 + nOArg1Value };
 
                 // act
@@ -122,7 +122,7 @@ namespace IISLogMuncher.Tests
                 // assert
                 Assert.AreEqual(expected.GetNonOptions().Count(), result.GetNonOptions().Count());
                 Assert.AreEqual(expected.GetOptionCount(), result.GetOptionCount());
-                Assert.AreEqual(expected.GetOption(nOArg1.Substring(1)), result.GetOption(nOArg1.Substring(1)));
+                Assert.AreEqual(expected.GetOption(nOArg1.ElementAt(1)), result.GetOption(nOArg1.ElementAt(1)));
             }
 
             // Test two options (neither with associated arguments)

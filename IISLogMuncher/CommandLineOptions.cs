@@ -8,20 +8,20 @@ namespace IISLogMuncher
 {
     public class CommandLineOptions
     {
-        private Dictionary<string, string> options = null;
+        private Dictionary<char, string> options = null;
         private List<string> nonOptions = null;
 
         public CommandLineOptions()
         {
-            options = new Dictionary<string, string>();
+            options = new Dictionary<char, string>();
             nonOptions = new List<string>();
         }
 
-        public string GetOption(string name)
+        public string GetOption(char option)
         {
-            if (options.ContainsKey(name))
+            if (options.ContainsKey(option))
             {
-                return options[name];
+                return options[option];
             }
             else
             {
@@ -29,9 +29,9 @@ namespace IISLogMuncher
             }
         }
 
-        public void SetOption(string name, string value)
+        public void SetOption(char option, string value)
         {
-            options[name] = value;
+            options[option] = value;
         }
 
         public int GetOptionCount()

@@ -92,7 +92,7 @@ namespace IISLogMuncher.Tests
             {
                 // arrange
                 string expected = "3";
-                string option = "s";
+                char option = 's';
                 clo.SetOption(option, expected);
 
                 // act
@@ -107,7 +107,7 @@ namespace IISLogMuncher.Tests
             {
                 // arrange
                 string expected = String.Empty;
-                string option = "s";
+                char option = 's';
 
                 // act
                 string result = clo.GetOption(option);
