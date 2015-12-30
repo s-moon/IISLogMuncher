@@ -24,15 +24,17 @@ namespace IISLogMuncher
             }
             set
             {
-                if (value == null)
+                if (value != null)
+                {
+                    options = value;
+                    optionDictionary = buildOptionDictionary(options);
+                }
+                else
                 {
                     string message = "Options must be non-null.";
                     logger.Error(message);
                     throw new ArgumentException(message);
                 }
-
-                options = value;
-                optionDictionary = buildOptionDictionary(options);
             }
         }
 
@@ -43,13 +45,17 @@ namespace IISLogMuncher
 
         public CommandLineProcessor(string options)
         {
-            if (options == null)
+            if (options != null)
+            {
+                Options = options;
+            }
+            else
             {
                 string message = "Options must be non-null.";
                 logger.Error(message);
                 throw new ArgumentException(message);
             }
-            Options = options;
+            
         }
 
         public CommandLineOptions ProcessArgs(string[] args)
@@ -66,15 +72,15 @@ namespace IISLogMuncher
                     {
                         if (expectsOptionArgument(optionCharacter))
                         {
-                            if (i >= newArgs.Count - 1)
+                            if (i < newArgs.Count - 1)
+                            {
+                                clo.SetOption(optionCharacter, newArgs[++i]);
+                            }
+                            else
                             {
                                 string message = "Missing argument for: " + optionCharacter;
                                 logger.Error(message);
                                 throw new ArgumentException(message);
-                            }
-                            else
-                            {
-                                clo.SetOption(optionCharacter, newArgs[++i]);
                             }
                         }
                         else
@@ -159,26 +165,28 @@ namespace IISLogMuncher
 
         private bool isKnownOption(char option)
         {
-            if (optionDictionary == null)
+            if (optionDictionary != null)
+            {
+                return optionDictionary.ContainsKey(option);
+            }
+            else
             {
                 string message = "No options defined.";
                 logger.Error(message);
                 throw new ArgumentException(message);
             }
-            else
-                return optionDictionary.ContainsKey(option);
         }
 
         private bool expectsOptionArgument(char option)
         {
-            if (!isKnownOption(option))
+            if (isKnownOption(option))
             {
-                return false;
+                string value = string.Empty;
+                optionDictionary.TryGetValue(option, out value);
+                return (value == OPTION_ARGUMENT.ToString());
             }
 
-            string value = string.Empty;
-            optionDictionary.TryGetValue(option, out value);
-            return (value == OPTION_ARGUMENT.ToString());
+            return false;
         }
     }
 }
