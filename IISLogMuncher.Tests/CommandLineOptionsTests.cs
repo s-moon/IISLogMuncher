@@ -103,7 +103,7 @@ namespace IISLogMuncher.Tests
             }
 
             [Test] //   subject      scenario          result
-            public void ReturnOption_OptionNotSupplied_ValueReturnedIsEmptyString()
+            public void ReturnOption_OptionNotSupplied_ValueReturnedIsFalseForExistance()
             {
                 // arrange
                 bool expected = false;
