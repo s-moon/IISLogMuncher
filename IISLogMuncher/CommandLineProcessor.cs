@@ -16,6 +16,9 @@ namespace IISLogMuncher
         private const char OPTION_NO_ARGUMENT = 'X';
         private string options;
 
+        /// <summary>
+        /// Getter and Setter for the options which are of the form: "s:hv"
+        /// </summary>
         public string Options
         {
             get
