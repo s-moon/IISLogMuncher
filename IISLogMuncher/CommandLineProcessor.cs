@@ -68,7 +68,7 @@ namespace IISLogMuncher
         }
 
         /// <summary>
-        /// Given an array of arguments, process them by building a dictionary of valid options and their arguments
+        /// Given an array of arguments, process them by building a dictionary of valid options and their argument values.
         /// </summary>
         /// <param name="args"></param>
         /// <returns></returns>
