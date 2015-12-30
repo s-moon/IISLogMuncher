@@ -54,9 +54,9 @@ namespace IISLogMuncher
 
         public CommandLineOptions ProcessArgs(string[] args)
         {
-            var clo = new CommandLineOptions();
             var newArgs = reconstructSquashedArgumentsIntoSpacedArguments(args);
 
+            var clo = new CommandLineOptions();
             for (int i = 0; i < newArgs.Count; i++)
             {
                 if (couldBeAnOption(newArgs[i]) && newArgs[i].Length > 1)
@@ -117,7 +117,7 @@ namespace IISLogMuncher
                 }
                 else
                 {
-                    od.Add(listOfOptions.ElementAt(i), OPTION_ARGUMENT.ToString());
+                    od.Add(listOfOptions.ElementAt(i), OPTION_NO_ARGUMENT.ToString());
                 }
             }
             return od;
