@@ -12,7 +12,7 @@ namespace IISLogMuncher.Tests
     {
         public class ProcessArgsMethod
         {
-            private CommandLineOptions result;
+            private CommandLineOptions actual;
             private CommandLineProcessor clp;
             private const string OptionNoArgument = ""; // must match what is in CommandLineProcessor
 
@@ -25,7 +25,7 @@ namespace IISLogMuncher.Tests
             [TearDown]
             public void Dispose()
             {
-                result = null;
+                actual = null;
                 clp = null;
             }
 
@@ -38,11 +38,11 @@ namespace IISLogMuncher.Tests
                 string[] args = { };
 
                 // act
-                result = clp.ProcessArgs(args);
+                actual = clp.ProcessArgs(args);
 
                 // assert
-                Assert.AreEqual(expected.GetNonOptions().Count, result.GetNonOptions().Count);
-                Assert.AreEqual(expected.GetOptionCount(), result.GetOptionCount());
+                Assert.AreEqual(expected.GetNonOptions().Count, actual.GetNonOptions().Count);
+                Assert.AreEqual(expected.GetOptionCount(), actual.GetOptionCount());
             }
 
             // Test one non-option argument
@@ -56,11 +56,11 @@ namespace IISLogMuncher.Tests
                 string[] args = { nOArg1 };
 
                 // act
-                result = clp.ProcessArgs(args);
+                actual = clp.ProcessArgs(args);
 
                 // assert
-                Assert.AreEqual(expected.GetNonOptions().Single(), result.GetNonOptions().Single());
-                Assert.AreEqual(expected.GetOptionCount(), result.GetOptionCount());
+                Assert.AreEqual(expected.GetNonOptions().Single(), actual.GetNonOptions().Single());
+                Assert.AreEqual(expected.GetOptionCount(), actual.GetOptionCount());
             }
 
             // Test two non-option arguments
@@ -76,12 +76,12 @@ namespace IISLogMuncher.Tests
                 string[] args = { nOArg1, nOArg2 };
 
                 // act
-                result = clp.ProcessArgs(args);
+                actual = clp.ProcessArgs(args);
 
                 // assert
-                Assert.AreEqual(expected.GetNonOptions().Count(), result.GetNonOptions().Count());
-                Assert.AreEqual(expected.GetNonOptions().First(), result.GetNonOptions().First());
-                Assert.AreEqual(expected.GetOptionCount(), result.GetOptionCount());
+                Assert.AreEqual(expected.GetNonOptions().Count(), actual.GetNonOptions().Count());
+                Assert.AreEqual(expected.GetNonOptions().First(), actual.GetNonOptions().First());
+                Assert.AreEqual(expected.GetOptionCount(), actual.GetOptionCount());
             }
 
             // Test one option with no associated argument
@@ -95,12 +95,12 @@ namespace IISLogMuncher.Tests
                 string[] args = { nOArg1 };
 
                 // act
-                result = clp.ProcessArgs(args);
+                actual = clp.ProcessArgs(args);
 
                 // assert
-                Assert.AreEqual(expected.GetNonOptions().Count(), result.GetNonOptions().Count());
-                Assert.AreEqual(expected.GetOptionCount(), result.GetOptionCount());
-                Assert.AreEqual(expected.GetOption(nOArg1.ElementAt(1)), result.GetOption(nOArg1.ElementAt(1)));
+                Assert.AreEqual(expected.GetNonOptions().Count(), actual.GetNonOptions().Count());
+                Assert.AreEqual(expected.GetOptionCount(), actual.GetOptionCount());
+                Assert.AreEqual(expected.GetOption(nOArg1.ElementAt(1)), actual.GetOption(nOArg1.ElementAt(1)));
             }
 
             // Test one option with an associated argument
@@ -115,12 +115,12 @@ namespace IISLogMuncher.Tests
                 string[] args = { nOArg1, nOArg1Value };
 
                 // act
-                result = clp.ProcessArgs(args);
+                actual = clp.ProcessArgs(args);
 
                 // assert
-                Assert.AreEqual(expected.GetNonOptions().Count(), result.GetNonOptions().Count());
-                Assert.AreEqual(expected.GetOptionCount(), result.GetOptionCount());
-                Assert.AreSame(expected.GetOption(nOArg1.ElementAt(1)), result.GetOption(nOArg1.ElementAt(1)));
+                Assert.AreEqual(expected.GetNonOptions().Count(), actual.GetNonOptions().Count());
+                Assert.AreEqual(expected.GetOptionCount(), actual.GetOptionCount());
+                Assert.AreSame(expected.GetOption(nOArg1.ElementAt(1)), actual.GetOption(nOArg1.ElementAt(1)));
             }
 
             // Test one option with an associated argument next to it e.g. -s3
@@ -135,12 +135,12 @@ namespace IISLogMuncher.Tests
                 string[] args = { nOArg1 + nOArg1Value };
 
                 // act
-                result = clp.ProcessArgs(args);
+                actual = clp.ProcessArgs(args);
 
                 // assert
-                Assert.AreEqual(expected.GetNonOptions().Count(), result.GetNonOptions().Count());
-                Assert.AreEqual(expected.GetOptionCount(), result.GetOptionCount());
-                Assert.AreEqual(expected.GetOption(nOArg1.ElementAt(1)), result.GetOption(nOArg1.ElementAt(1)));
+                Assert.AreEqual(expected.GetNonOptions().Count(), actual.GetNonOptions().Count());
+                Assert.AreEqual(expected.GetOptionCount(), actual.GetOptionCount());
+                Assert.AreEqual(expected.GetOption(nOArg1.ElementAt(1)), actual.GetOption(nOArg1.ElementAt(1)));
             }
 
             // Test two options (neither with associated arguments)
@@ -156,12 +156,12 @@ namespace IISLogMuncher.Tests
                 string[] args = { nOArg1, nOArg2 };
 
                 // act
-                result = clp.ProcessArgs(args);
+                actual = clp.ProcessArgs(args);
 
                 // assert
-                Assert.AreEqual(expected.GetNonOptions().Count(), result.GetNonOptions().Count());
-                Assert.AreEqual(expected.GetOptionCount(), result.GetOptionCount());
-                Assert.AreEqual(expected.GetOption(nOArg1.ElementAt(1)), result.GetOption(nOArg1.ElementAt(1)));
+                Assert.AreEqual(expected.GetNonOptions().Count(), actual.GetNonOptions().Count());
+                Assert.AreEqual(expected.GetOptionCount(), actual.GetOptionCount());
+                Assert.AreEqual(expected.GetOption(nOArg1.ElementAt(1)), actual.GetOption(nOArg1.ElementAt(1)));
             }
 
             // Test two options, one of which has an associated argument and one doesn't
@@ -178,13 +178,13 @@ namespace IISLogMuncher.Tests
                 string[] args = { nOArg1, nOArg2, nOArg2Value };
 
                 // act
-                result = clp.ProcessArgs(args);
+                actual = clp.ProcessArgs(args);
 
                 // assert
-                Assert.AreEqual(expected.GetNonOptions().Count(), result.GetNonOptions().Count());
-                Assert.AreEqual(expected.GetOptionCount(), result.GetOptionCount());
-                Assert.AreEqual(expected.GetOption(nOArg1.ElementAt(1)), result.GetOption(nOArg1.ElementAt(1)));
-                Assert.AreEqual(expected.GetOption(nOArg2.ElementAt(1)), result.GetOption(nOArg2.ElementAt(1)));
+                Assert.AreEqual(expected.GetNonOptions().Count(), actual.GetNonOptions().Count());
+                Assert.AreEqual(expected.GetOptionCount(), actual.GetOptionCount());
+                Assert.AreEqual(expected.GetOption(nOArg1.ElementAt(1)), actual.GetOption(nOArg1.ElementAt(1)));
+                Assert.AreEqual(expected.GetOption(nOArg2.ElementAt(1)), actual.GetOption(nOArg2.ElementAt(1)));
             }
 
             // Test two options (no associated arguments) and one non-option
@@ -202,12 +202,12 @@ namespace IISLogMuncher.Tests
                 string[] args = { nOArg1, nOArg2, nOArg3 };
 
                 // act
-                result = clp.ProcessArgs(args);
+                actual = clp.ProcessArgs(args);
 
                 // assert
-                CollectionAssert.AreEqual(expected.GetNonOptions(), result.GetNonOptions());
-                Assert.AreEqual(expected.GetOptionCount(), result.GetOptionCount());
-                Assert.AreEqual(expected.GetOption(nOArg1.ElementAt(1)), result.GetOption(nOArg1.ElementAt(1)));
+                CollectionAssert.AreEqual(expected.GetNonOptions(), actual.GetNonOptions());
+                Assert.AreEqual(expected.GetOptionCount(), actual.GetOptionCount());
+                Assert.AreEqual(expected.GetOption(nOArg1.ElementAt(1)), actual.GetOption(nOArg1.ElementAt(1)));
             }
 
             // Test a non-option, option (no assoaciated argument) and a non-option
@@ -225,12 +225,12 @@ namespace IISLogMuncher.Tests
                 string[] args = { nOArg1, nOArg2, nOArg3 };
 
                 // act
-                result = clp.ProcessArgs(args);
+                actual = clp.ProcessArgs(args);
 
                 // assert
-                CollectionAssert.AreEqual(expected.GetNonOptions(), result.GetNonOptions());
-                Assert.AreEqual(expected.GetOptionCount(), result.GetOptionCount());
-                Assert.AreEqual(expected.GetOption(nOArg2.ElementAt(1)), result.GetOption(nOArg2.ElementAt(1)));
+                CollectionAssert.AreEqual(expected.GetNonOptions(), actual.GetNonOptions());
+                Assert.AreEqual(expected.GetOptionCount(), actual.GetOptionCount());
+                Assert.AreEqual(expected.GetOption(nOArg2.ElementAt(1)), actual.GetOption(nOArg2.ElementAt(1)));
             }
 
             // Test an option, a non-option, and an option
@@ -248,13 +248,13 @@ namespace IISLogMuncher.Tests
                 string[] args = { nOArg1, nOArg2, nOArg3 };
 
                 // act
-                result = clp.ProcessArgs(args);
+                actual = clp.ProcessArgs(args);
 
                 // assert
-                CollectionAssert.AreEqual(expected.GetNonOptions(), result.GetNonOptions());
-                Assert.AreEqual(expected.GetOptionCount(), result.GetOptionCount());
-                Assert.AreEqual(expected.GetOption(nOArg1.ElementAt(1)), result.GetOption(nOArg1.ElementAt(1)));
-                Assert.AreEqual(expected.GetOption(nOArg3.ElementAt(1)), result.GetOption(nOArg3.ElementAt(1)));
+                CollectionAssert.AreEqual(expected.GetNonOptions(), actual.GetNonOptions());
+                Assert.AreEqual(expected.GetOptionCount(), actual.GetOptionCount());
+                Assert.AreEqual(expected.GetOption(nOArg1.ElementAt(1)), actual.GetOption(nOArg1.ElementAt(1)));
+                Assert.AreEqual(expected.GetOption(nOArg3.ElementAt(1)), actual.GetOption(nOArg3.ElementAt(1)));
             }
 
             // Test an option with no args that shouldn't be present

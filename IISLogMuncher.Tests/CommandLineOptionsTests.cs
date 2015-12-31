@@ -33,10 +33,10 @@ namespace IISLogMuncher.Tests
                 int expected = 0;
 
                 // act
-                int result = clo.GetNonOptions().Count;
+                int actual = clo.GetNonOptions().Count;
 
                 // assert
-                Assert.AreEqual(result, expected);
+                Assert.AreEqual(actual, expected);
             }
 
             [Test] //   subject             scenario            result
