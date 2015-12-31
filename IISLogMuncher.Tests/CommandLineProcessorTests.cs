@@ -14,7 +14,7 @@ namespace IISLogMuncher.Tests
         {
             private CommandLineOptions result;
             private CommandLineProcessor clp;
-            private const char OPTION_NO_ARGUMENT = 'X'; // must match what is in CommandLineProcessor
+            private const char OptionNoArgument = 'X'; // must match what is in CommandLineProcessor
 
             [SetUp]
             public void Init()
@@ -91,7 +91,7 @@ namespace IISLogMuncher.Tests
                 // arrange
                 CommandLineOptions expected = new CommandLineOptions();
                 string nOArg1 = "-a";
-                expected.SetOption(nOArg1.ElementAt(1), OPTION_NO_ARGUMENT.ToString());
+                expected.SetOption(nOArg1.ElementAt(1), OptionNoArgument.ToString());
                 string[] args = { nOArg1 };
 
                 // act
@@ -151,8 +151,8 @@ namespace IISLogMuncher.Tests
                 CommandLineOptions expected = new CommandLineOptions();
                 string nOArg1 = "-a";
                 string nOArg2 = "-b";
-                expected.SetOption(nOArg1.ElementAt(1), OPTION_NO_ARGUMENT.ToString());
-                expected.SetOption(nOArg2.ElementAt(1), OPTION_NO_ARGUMENT.ToString());
+                expected.SetOption(nOArg1.ElementAt(1), OptionNoArgument.ToString());
+                expected.SetOption(nOArg2.ElementAt(1), OptionNoArgument.ToString());
                 string[] args = { nOArg1, nOArg2 };
 
                 // act
@@ -173,7 +173,7 @@ namespace IISLogMuncher.Tests
                 string nOArg1 = "-a";
                 string nOArg2 = "-s";
                 string nOArg2Value = "argument";
-                expected.SetOption(nOArg1.ElementAt(1), OPTION_NO_ARGUMENT.ToString());
+                expected.SetOption(nOArg1.ElementAt(1), OptionNoArgument.ToString());
                 expected.SetOption(nOArg2.ElementAt(1), nOArg2Value);
                 string[] args = { nOArg1, nOArg2, nOArg2Value };
 
@@ -196,8 +196,8 @@ namespace IISLogMuncher.Tests
                 string nOArg1 = "-a";
                 string nOArg2 = "-b";
                 string nOArg3 = "hello.txt";
-                expected.SetOption(nOArg1.ElementAt(1), OPTION_NO_ARGUMENT.ToString());
-                expected.SetOption(nOArg2.ElementAt(1), OPTION_NO_ARGUMENT.ToString());
+                expected.SetOption(nOArg1.ElementAt(1), OptionNoArgument.ToString());
+                expected.SetOption(nOArg2.ElementAt(1), OptionNoArgument.ToString());
                 expected.AddNonOption(nOArg3);
                 string[] args = { nOArg1, nOArg2, nOArg3 };
 
@@ -220,7 +220,7 @@ namespace IISLogMuncher.Tests
                 string nOArg2 = "-b";
                 string nOArg3 = "hello.txt";
                 expected.AddNonOption(nOArg1);
-                expected.SetOption(nOArg2.ElementAt(1), OPTION_NO_ARGUMENT.ToString());
+                expected.SetOption(nOArg2.ElementAt(1), OptionNoArgument.ToString());
                 expected.AddNonOption(nOArg3);
                 string[] args = { nOArg1, nOArg2, nOArg3 };
 
@@ -242,9 +242,9 @@ namespace IISLogMuncher.Tests
                 string nOArg1 = "-a";
                 string nOArg2 = "fooba.doc";
                 string nOArg3 = "-b";
-                expected.SetOption(nOArg1.ElementAt(1), OPTION_NO_ARGUMENT.ToString());
+                expected.SetOption(nOArg1.ElementAt(1), OptionNoArgument.ToString());
                 expected.AddNonOption(nOArg2);
-                expected.SetOption(nOArg3.ElementAt(1), OPTION_NO_ARGUMENT.ToString());
+                expected.SetOption(nOArg3.ElementAt(1), OptionNoArgument.ToString());
                 string[] args = { nOArg1, nOArg2, nOArg3 };
 
                 // act

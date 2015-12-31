@@ -11,9 +11,9 @@ namespace IISLogMuncher
     {
         private static Logger logger = LogManager.GetCurrentClassLogger();
         private Dictionary<char, string> optionDictionary = null;
-        private const char OPTION_INDICATOR = '-';
-        private const char OPTION_ARGUMENT = ':';
-        private const char OPTION_NO_ARGUMENT = 'X';
+        private const char OptionIndicator = '-';
+        private const char OptionArgument = ':';
+        private const char OptionNoArgument = 'X';
         private string options;
 
         /// <summary>
@@ -99,7 +99,7 @@ namespace IISLogMuncher
                         }
                         else
                         {
-                            clo.SetOption(optionCharacter, OPTION_NO_ARGUMENT.ToString());
+                            clo.SetOption(optionCharacter, OptionNoArgument.ToString());
                         }
                     }
                     else
@@ -125,7 +125,7 @@ namespace IISLogMuncher
         private bool couldBeAnOption(string v)
         {
             if (!string.IsNullOrEmpty(v) && 
-                    v.ElementAt(0) == OPTION_INDICATOR)
+                    v.ElementAt(0) == OptionIndicator)
                 return true;
             else
                 return false;
@@ -141,13 +141,13 @@ namespace IISLogMuncher
             var od = new Dictionary<char, string>();
             for (int i = 0; i < listOfOptions.Length; i++)
             {
-                if (i < listOfOptions.Length - 1 && Options[i + 1] == OPTION_ARGUMENT)
+                if (i < listOfOptions.Length - 1 && Options[i + 1] == OptionArgument)
                 {
-                    od.Add(listOfOptions.ElementAt(i++), OPTION_ARGUMENT.ToString());
+                    od.Add(listOfOptions.ElementAt(i++), OptionArgument.ToString());
                 }
                 else
                 {
-                    od.Add(listOfOptions.ElementAt(i), OPTION_NO_ARGUMENT.ToString());
+                    od.Add(listOfOptions.ElementAt(i), OptionNoArgument.ToString());
                 }
             }
             return od;
@@ -165,7 +165,7 @@ namespace IISLogMuncher
             {
                 if (!string.IsNullOrEmpty(args[i]))
                 {
-                    if (args[i][0] == OPTION_INDICATOR)
+                    if (args[i][0] == OptionIndicator)
                     {
                         if (args[i].Length > 2)
                         {
@@ -217,7 +217,7 @@ namespace IISLogMuncher
             {
                 string value = string.Empty;
                 optionDictionary.TryGetValue(option, out value);
-                return (value == OPTION_ARGUMENT.ToString());
+                return (value == OptionArgument.ToString());
             }
 
             return false;
