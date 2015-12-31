@@ -14,6 +14,7 @@ namespace IISLogMuncher.Tests
         {
             private CommandLineOptions result;
             private CommandLineProcessor clp;
+            private const char OPTION_NO_ARGUMENT = 'X'; // must match what is in CommandLineProcessor
 
             [SetUp]
             public void Init()
@@ -84,6 +85,23 @@ namespace IISLogMuncher.Tests
             }
 
             // Test one option with no associated argument
+            [Test]
+            public void ProcessArgs_OneOptionAndNoArgSupplied_OneOptionReturned()
+            {
+                // arrange
+                CommandLineOptions expected = new CommandLineOptions();
+                string nOArg1 = "-a";
+                expected.SetOption(nOArg1.ElementAt(1), OPTION_NO_ARGUMENT.ToString());
+                string[] args = { nOArg1 };
+
+                // act
+                result = clp.ProcessArgs(args);
+
+                // assert
+                Assert.AreEqual(expected.GetNonOptions().Count(), result.GetNonOptions().Count());
+                Assert.AreEqual(expected.GetOptionCount(), result.GetOptionCount());
+                Assert.AreEqual(expected.GetOption(nOArg1.ElementAt(1)), result.GetOption(nOArg1.ElementAt(1)));
+            }
 
             // Test one option with an associated argument
             [Test]
@@ -91,7 +109,7 @@ namespace IISLogMuncher.Tests
             {
                 // arrange
                 CommandLineOptions expected = new CommandLineOptions();
-                string nOArg1 = "-s";
+                string nOArg1 = "-s"; 
                 string nOArg1Value = "3";
                 expected.SetOption(nOArg1.ElementAt(1), nOArg1Value);
                 string[] args = { nOArg1, nOArg1Value };
