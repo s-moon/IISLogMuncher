@@ -14,7 +14,7 @@ namespace IISLogMuncher.Tests
         {
             private CommandLineOptions result;
             private CommandLineProcessor clp;
-            private const char OptionNoArgument = 'X'; // must match what is in CommandLineProcessor
+            private const string OptionNoArgument = ""; // must match what is in CommandLineProcessor
 
             [SetUp]
             public void Init()

@@ -13,7 +13,7 @@ namespace IISLogMuncher
         private Dictionary<char, string> optionDictionary = null;
         private const char OptionIndicator = '-';
         private const char OptionArgument = ':';
-        private const char OptionNoArgument = 'X';
+        private const string OptionNoArgument = "";
         private string options;
 
         /// <summary>
@@ -99,7 +99,7 @@ namespace IISLogMuncher
                         }
                         else
                         {
-                            clo.SetOption(optionCharacter, OptionNoArgument.ToString());
+                            clo.SetOption(optionCharacter, OptionNoArgument);
                         }
                     }
                     else
@@ -147,7 +147,7 @@ namespace IISLogMuncher
                 }
                 else
                 {
-                    od.Add(listOfOptions.ElementAt(i), OptionNoArgument.ToString());
+                    od.Add(listOfOptions.ElementAt(i), OptionNoArgument);
                 }
             }
             return od;
