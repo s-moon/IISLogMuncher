@@ -11,6 +11,7 @@ namespace IISLogMuncher
         private Dictionary<char, string> options = null;
         private List<string> nonOptions = null;
 
+        #region constructors
         /// <summary>
         /// Create a standard object
         /// </summary>
@@ -19,7 +20,9 @@ namespace IISLogMuncher
             options = new Dictionary<char, string>();
             nonOptions = new List<string>();
         }
+        #endregion
 
+        #region methods
         /// <summary>
         /// Has the requested option been set by the user?
         /// </summary>
@@ -83,5 +86,6 @@ namespace IISLogMuncher
         {
             nonOptions.Add(param);
         }
+        #endregion
     }
 }

@@ -16,6 +16,7 @@ namespace IISLogMuncher
         private const string OptionNoArgument = "";
         private string options;
 
+        #region properties
         /// <summary>
         /// Getter and Setter for the options which are of the form: "s:hv"
         /// </summary>
@@ -40,7 +41,9 @@ namespace IISLogMuncher
                 }
             }
         }
+        #endregion
 
+        #region constructors
         /// <summary>
         /// A standard object will have no options.
         /// </summary>
@@ -66,7 +69,9 @@ namespace IISLogMuncher
                 throw new ArgumentException(message);
             }
         }
+        #endregion
 
+        #region methods
         /// <summary>
         /// Given an array of arguments, process them by building a dictionary of valid options and their argument values.
         /// </summary>
@@ -222,5 +227,6 @@ namespace IISLogMuncher
 
             return false;
         }
+        #endregion
     }
 }
