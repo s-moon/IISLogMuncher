@@ -144,10 +144,71 @@ namespace IISLogMuncher.Tests
             }
 
             // Test two options (neither with associated arguments)
+            [Test]
+            public void ProcessArgs_TwoOptionsAndNoArgSupplied_TwoOptionsReturned()
+            {
+                // arrange
+                CommandLineOptions expected = new CommandLineOptions();
+                string nOArg1 = "-a";
+                string nOArg2 = "-b";
+                expected.SetOption(nOArg1.ElementAt(1), OPTION_NO_ARGUMENT.ToString());
+                expected.SetOption(nOArg2.ElementAt(1), OPTION_NO_ARGUMENT.ToString());
+                string[] args = { nOArg1, nOArg2 };
+
+                // act
+                result = clp.ProcessArgs(args);
+
+                // assert
+                Assert.AreEqual(expected.GetNonOptions().Count(), result.GetNonOptions().Count());
+                Assert.AreEqual(expected.GetOptionCount(), result.GetOptionCount());
+                Assert.AreEqual(expected.GetOption(nOArg1.ElementAt(1)), result.GetOption(nOArg1.ElementAt(1)));
+            }
 
             // Test two options, one of which has an associated argument and one doesn't
+            [Test]
+            public void ProcessArgs_TwoOptionsAndOneArgSupplied_TwoOptionsReturned()
+            {
+                // arrange
+                CommandLineOptions expected = new CommandLineOptions();
+                string nOArg1 = "-a";
+                string nOArg2 = "-s";
+                string nOArg2Value = "argument";
+                expected.SetOption(nOArg1.ElementAt(1), OPTION_NO_ARGUMENT.ToString());
+                expected.SetOption(nOArg2.ElementAt(1), nOArg2Value);
+                string[] args = { nOArg1, nOArg2, nOArg2Value };
+
+                // act
+                result = clp.ProcessArgs(args);
+
+                // assert
+                Assert.AreEqual(expected.GetNonOptions().Count(), result.GetNonOptions().Count());
+                Assert.AreEqual(expected.GetOptionCount(), result.GetOptionCount());
+                Assert.AreEqual(expected.GetOption(nOArg1.ElementAt(1)), result.GetOption(nOArg1.ElementAt(1)));
+                Assert.AreEqual(expected.GetOption(nOArg2.ElementAt(1)), result.GetOption(nOArg2.ElementAt(1)));
+            }
 
             // Test two options (no associated arguments) and one non-option
+            [Test]
+            public void ProcessArgs_TwoOptionsAndOneNonOptionSupplied_TwoOptionsAndOneNonOptionReturned()
+            {
+                // arrange
+                CommandLineOptions expected = new CommandLineOptions();
+                string nOArg1 = "-a";
+                string nOArg2 = "-b";
+                string nOArg3 = "hello.txt";
+                expected.SetOption(nOArg1.ElementAt(1), OPTION_NO_ARGUMENT.ToString());
+                expected.SetOption(nOArg2.ElementAt(1), OPTION_NO_ARGUMENT.ToString());
+                expected.AddNonOption(nOArg3);
+                string[] args = { nOArg1, nOArg2, nOArg3 };
+
+                // act
+                result = clp.ProcessArgs(args);
+
+                // assert
+                CollectionAssert.AreEqual(expected.GetNonOptions(), result.GetNonOptions());
+                Assert.AreEqual(expected.GetOptionCount(), result.GetOptionCount());
+                Assert.AreEqual(expected.GetOption(nOArg1.ElementAt(1)), result.GetOption(nOArg1.ElementAt(1)));
+            }
 
             // Test a non-option, option (no assoaciated argument) and a non-option
 
