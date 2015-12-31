@@ -211,8 +211,51 @@ namespace IISLogMuncher.Tests
             }
 
             // Test a non-option, option (no assoaciated argument) and a non-option
+            [Test]
+            public void ProcessArgs_TwoOptionsAndOneNonOptionSupplied_OptionNonOptionAndOptionReturned()
+            {
+                // arrange
+                CommandLineOptions expected = new CommandLineOptions();
+                string nOArg1 = "abc.jg";
+                string nOArg2 = "-b";
+                string nOArg3 = "hello.txt";
+                expected.AddNonOption(nOArg1);
+                expected.SetOption(nOArg2.ElementAt(1), OPTION_NO_ARGUMENT.ToString());
+                expected.AddNonOption(nOArg3);
+                string[] args = { nOArg1, nOArg2, nOArg3 };
+
+                // act
+                result = clp.ProcessArgs(args);
+
+                // assert
+                CollectionAssert.AreEqual(expected.GetNonOptions(), result.GetNonOptions());
+                Assert.AreEqual(expected.GetOptionCount(), result.GetOptionCount());
+                Assert.AreEqual(expected.GetOption(nOArg2.ElementAt(1)), result.GetOption(nOArg2.ElementAt(1)));
+            }
 
             // Test an option, a non-option, and an option
+            [Test]
+            public void ProcessArgs_OneOptionAndOneNonOptionAndOneOptionSupplied_OptionNonOptionAndOptionReturned()
+            {
+                // arrange
+                CommandLineOptions expected = new CommandLineOptions();
+                string nOArg1 = "-a";
+                string nOArg2 = "fooba.doc";
+                string nOArg3 = "-b";
+                expected.SetOption(nOArg1.ElementAt(1), OPTION_NO_ARGUMENT.ToString());
+                expected.AddNonOption(nOArg2);
+                expected.SetOption(nOArg3.ElementAt(1), OPTION_NO_ARGUMENT.ToString());
+                string[] args = { nOArg1, nOArg2, nOArg3 };
+
+                // act
+                result = clp.ProcessArgs(args);
+
+                // assert
+                CollectionAssert.AreEqual(expected.GetNonOptions(), result.GetNonOptions());
+                Assert.AreEqual(expected.GetOptionCount(), result.GetOptionCount());
+                Assert.AreEqual(expected.GetOption(nOArg1.ElementAt(1)), result.GetOption(nOArg1.ElementAt(1)));
+                Assert.AreEqual(expected.GetOption(nOArg3.ElementAt(1)), result.GetOption(nOArg3.ElementAt(1)));
+            }
 
             // Test an option with no args that shouldn't be present
 
