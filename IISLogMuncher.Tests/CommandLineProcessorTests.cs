@@ -153,6 +153,9 @@ namespace IISLogMuncher.Tests
 
             // Test an option, a non-option, and an option
 
+            // Test an option with no args that shouldn't be present
+
+            // Test an option with args that shouldn't be present
 
 
         }
