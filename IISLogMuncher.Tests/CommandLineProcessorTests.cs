@@ -273,6 +273,20 @@ namespace IISLogMuncher.Tests
 
                 // assert - not required
             }
+
+            // Option supplied in parameters are null
+            [Test]
+            [ExpectedException(typeof(ArgumentException))]
+            public void ProcessArgs_NullOptionsAsParameter_ExceptionThrown()
+            {
+                // arrange
+                clp = new CommandLineProcessor();
+
+                // act - not required
+                clp.Options = null;
+
+                // assert - not required
+            }
         }
     }
 }
