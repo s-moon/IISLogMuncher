@@ -257,7 +257,20 @@ namespace IISLogMuncher.Tests
                 Assert.AreEqual(expected.GetOption(nOArg3.ElementAt(1)), actual.GetOption(nOArg3.ElementAt(1)));
             }
 
-            // Test an option with no args that shouldn't be present
+            // Test an option with no args that should be present
+            [Test]
+            [ExpectedException(typeof(ArgumentException))]
+            public void ProcessArgs_OneOptionWithNoArgSupplied_ExceptionThrown()
+            {
+                // arrange
+                string nOArg1 = "-s";
+                string[] args = { nOArg1 };
+
+                // act
+                actual = clp.ProcessArgs(args);
+
+                // assert - not needed
+            }
 
             // Test an option with args that shouldn't be present
 
