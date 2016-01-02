@@ -28,13 +28,13 @@ namespace IISLogMuncher
 
         private static void ShowHelpText()
         {
-            Console.WriteLine("".PadLeft(40, '-'));
+            Console.WriteLine("".PadLeft(55, '-'));
             Console.WriteLine("IIS Log Muncher v");
             Console.WriteLine();
             Console.WriteLine("Options:");
-            Console.WriteLine("-h".PadLeft(10, ' ') + " : help");
-            Console.WriteLine("-s <arg>".PadLeft(10, ' ') + " : skip lines from input file");
-            Console.WriteLine("".PadLeft(40, '-'));
+            Console.WriteLine("-h".PadLeft(15, ' ') + " : this help text");
+            Console.WriteLine("-s <number>".PadLeft(15, ' ') + " : skip <number> lines from input file");
+            Console.WriteLine("".PadLeft(55, '-'));
         }
     }
 }
