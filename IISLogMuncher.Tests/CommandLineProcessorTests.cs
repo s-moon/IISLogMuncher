@@ -273,6 +273,25 @@ namespace IISLogMuncher.Tests
             }
 
             // Test an option with args that shouldn't be present
+            [Test]
+            public void ProcessArgs_OneOptionWithArgumentWhenArgumentNotRequired_OptionNonOptionAndOptionReturned()
+            {
+                // arrange
+                CommandLineOptions expected = new CommandLineOptions();
+                string nOArg1 = "-a";
+                string nOArg1Value = "fooba.doc";
+                expected.SetOption(nOArg1.ElementAt(1), OptionNoArgument.ToString());
+                expected.AddNonOption(nOArg1Value);
+                string[] args = { nOArg1+nOArg1Value };
+
+                // act
+                actual = clp.ProcessArgs(args);
+
+                // assert
+                CollectionAssert.AreEqual(expected.GetNonOptions(), actual.GetNonOptions());
+                Assert.AreEqual(expected.GetOptionCount(), actual.GetOptionCount());
+                Assert.AreEqual(expected.GetOption(nOArg1.ElementAt(1)), actual.GetOption(nOArg1.ElementAt(1)));
+            }
 
             // Option supplied in setup are null
             [Test]
