@@ -28,13 +28,15 @@ namespace IISLogMuncher
 
         private static void ShowHelpText()
         {
-            Console.WriteLine("".PadLeft(55, '-'));
+            int linePadding = 65;
+            int leftPadding = 15;
+            Console.WriteLine("".PadLeft(linePadding, '-'));
             Console.WriteLine("IIS Log Muncher v");
             Console.WriteLine();
             Console.WriteLine("Options:");
-            Console.WriteLine("-h".PadLeft(15, ' ') + " : this help text");
-            Console.WriteLine("-s <number>".PadLeft(15, ' ') + " : skip <number> lines from input file");
-            Console.WriteLine("".PadLeft(55, '-'));
+            Console.WriteLine("-h".PadLeft(leftPadding, ' ') + " : this help text");
+            Console.WriteLine("-s <number>".PadLeft(leftPadding, ' ') + " : skip <number> lines from start of input file");
+            Console.WriteLine("".PadLeft(linePadding, '-'));
         }
     }
 }
