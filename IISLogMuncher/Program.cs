@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using NLog;
+using System.Reflection;
 
 namespace IISLogMuncher
 {
@@ -31,7 +32,8 @@ namespace IISLogMuncher
             int linePadding = 65;
             int leftPadding = 15;
             Console.WriteLine("".PadLeft(linePadding, '-'));
-            Console.WriteLine("IIS Log Muncher v");
+            var version = Assembly.GetExecutingAssembly().GetName().Version;
+            Console.WriteLine("IIS Log Muncher v" + version.Major + "." + version.Minor);
             Console.WriteLine();
             Console.WriteLine("Options:");
             Console.WriteLine("-h".PadLeft(leftPadding, ' ') + " : this help text");
