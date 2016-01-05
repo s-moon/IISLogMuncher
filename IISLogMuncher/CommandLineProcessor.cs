@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace IISLogMuncher
@@ -28,14 +29,14 @@ namespace IISLogMuncher
             }
             set
             {
-                if (value != null)
+                if (value != null && validOptions(value))
                 {
                     options = value;
                     optionDictionary = buildOptionDictionary(options);
                 }
                 else
                 {
-                    string message = "Options must be non-null.";
+                    string message = "Options must be non-null and contain characters from [a-zA-Z0-9:].";
                     logger.Error(message);
                     throw new ArgumentException(message);
                 }
@@ -226,6 +227,16 @@ namespace IISLogMuncher
             }
 
             return false;
+        }
+
+        /// <summary>
+        /// Are these options valid? Must be alphanumeric or colon
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public bool validOptions(string value)
+        {
+            return Regex.Matches(value, @"^[a-zA-Z0-9:]*$").Count != 0;
         }
         #endregion
     }
