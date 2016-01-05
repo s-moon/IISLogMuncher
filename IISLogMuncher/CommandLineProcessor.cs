@@ -234,7 +234,7 @@ namespace IISLogMuncher
         /// </summary>
         /// <param name="value"></param>
         /// <returns></returns>
-        public bool validOptions(string value)
+        private bool validOptions(string value)
         {
             return Regex.Matches(value, @"^[a-zA-Z0-9:]*$").Count != 0;
         }
