@@ -130,8 +130,7 @@ namespace IISLogMuncher
         /// <returns></returns>
         private bool couldBeAnOption(string v)
         {
-            if (!string.IsNullOrEmpty(v) && 
-                    v.ElementAt(0) == OptionIndicator)
+            if (!string.IsNullOrEmpty(v) && v.ElementAt(0) == OptionIndicator)
                 return true;
             else
                 return false;
