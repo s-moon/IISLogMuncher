@@ -149,7 +149,7 @@ namespace IISLogMuncher
             {
                 if (i < listOfOptions.Length - 1 && Options[i + 1] == OptionArgument)
                 {
-                    od.Add(listOfOptions.ElementAt(i++), OptionArgument.ToString());
+                    od.Add(listOfOptions.ElementAt(i++), OptionArgument.ToString()); // skip colon
                 }
                 else
                 {
