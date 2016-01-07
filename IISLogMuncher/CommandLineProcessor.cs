@@ -225,8 +225,10 @@ namespace IISLogMuncher
                 optionDictionary.TryGetValue(option, out value);
                 return (value == OptionArgument.ToString());
             }
-
-            return false;
+            else
+            {
+                return false;
+            }
         }
 
         /// <summary>
