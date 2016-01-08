@@ -10,11 +10,17 @@ namespace IISLogMuncher
 {
     public class CommandLineProcessor
     {
+        // NLog
         private static Logger logger = LogManager.GetCurrentClassLogger();
+
+        // Dictionary of known options
         private Dictionary<char, string> optionDictionary = null;
+
+        // Constants used for options
         private const char OptionIndicator = '-';
         private const char OptionArgument = ':';
         private const string OptionNoArgument = "";
+
         private string options;
 
         #region properties
