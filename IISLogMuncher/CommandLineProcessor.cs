@@ -2,9 +2,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
+using static IISLogMuncher.Util;
 
 namespace IISLogMuncher
 {
@@ -43,9 +42,7 @@ namespace IISLogMuncher
                 }
                 else
                 {
-                    string message = "Options must be non-null and contain characters from [a-zA-Z0-9:].";
-                    logger.Error(message);
-                    throw new ArgumentException(message);
+                    LogAndThrowException(new ArgumentException("Options must be non-null and contain characters from [a-zA-Z0-9:]."));
                 }
             }
         }
@@ -72,9 +69,7 @@ namespace IISLogMuncher
             }
             else
             {
-                string message = "Options must be non-null.";
-                logger.Error(message);
-                throw new ArgumentException(message);
+                LogAndThrowException(new ArgumentException("Options must be non-null."));
             }
         }
         #endregion
@@ -148,9 +143,7 @@ namespace IISLogMuncher
             }
             else
             {
-                string message = "Unknown option: " + optionCharacter;
-                logger.Error(message);
-                throw new ArgumentException(message);
+                LogAndThrowException(new ArgumentException("Unknown option: " + optionCharacter));
             }
 
             return i;
@@ -232,16 +225,11 @@ namespace IISLogMuncher
         /// <returns></returns>
         private bool isKnownOption(char option)
         {
-            if (optionDictionary != null)
+            if (optionDictionary == null)
             {
-                return optionDictionary.ContainsKey(option);
+                LogAndThrowException(new ArgumentException("No options defined."));
             }
-            else
-            {
-                string message = "No options defined.";
-                logger.Error(message);
-                throw new ArgumentException(message);
-            }
+            return true;
         }
 
         /// <summary>
