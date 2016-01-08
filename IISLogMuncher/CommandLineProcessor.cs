@@ -27,9 +27,10 @@ namespace IISLogMuncher
             {
                 return options;
             }
+
             set
             {
-                if (value != null && validOptions(value))
+                if (value != null && areOnlyValidCharactersUsedForOptions(value))
                 {
                     options = value;
                     optionDictionary = buildOptionDictionary(options);
@@ -87,40 +88,66 @@ namespace IISLogMuncher
             {
                 if (couldBeAnOption(newArgs[i]) && newArgs[i].Length > 1)
                 {
-                    char optionCharacter = newArgs[i].ElementAt(1);
-                    if (isKnownOption(optionCharacter))
+                    i = processPossibleOption(newArgs, clo, i);
+                }
+                else
+                {
+                    processNonOption(newArgs, clo, i);
+                }
+            }
+            return clo;
+        }
+
+        /// <summary>
+        /// Handle cases where this clearly isn't an option of the form '-x'.
+        /// </summary>
+        /// <param name="newArgs"></param>
+        /// <param name="clo"></param>
+        /// <param name="i"></param>
+        private void processNonOption(List<string> newArgs, CommandLineOptions clo, int i)
+        {
+            clo.AddNonOption(newArgs[i]);
+        }
+
+        /// <summary>
+        /// Handle cases where this *could be* an option like '-x'. Where it is a possible option is
+        /// in the fact that someone might use '-x' but 'x' is not a declared option in the option list.
+        /// </summary>
+        /// <param name="newArgs"></param>
+        /// <param name="clo"></param>
+        /// <param name="i"></param>
+        /// <returns></returns>
+        private int processPossibleOption(List<string> newArgs, CommandLineOptions clo, int i)
+        {
+            char optionCharacter = newArgs[i].ElementAt(1);
+            if (isKnownOption(optionCharacter))
+            {
+                if (expectsOptionArgument(optionCharacter))
+                {
+                    if (i < newArgs.Count - 1)
                     {
-                        if (expectsOptionArgument(optionCharacter))
-                        {
-                            if (i < newArgs.Count - 1)
-                            {
-                                clo.SetOption(optionCharacter, newArgs[++i]);
-                            }
-                            else
-                            {
-                                string message = "Missing argument for: " + optionCharacter;
-                                logger.Error(message);
-                                throw new ArgumentException(message);
-                            }
-                        }
-                        else
-                        {
-                            clo.SetOption(optionCharacter, OptionNoArgument);
-                        }
+                        clo.SetOption(optionCharacter, newArgs[++i]);
                     }
                     else
                     {
-                        string message = "Unknown option: " + optionCharacter;
+                        string message = "Missing argument for: " + optionCharacter;
                         logger.Error(message);
                         throw new ArgumentException(message);
                     }
                 }
                 else
                 {
-                    clo.AddNonOption(newArgs[i]);
+                    clo.SetOption(optionCharacter, OptionNoArgument);
                 }
             }
-            return clo;
+            else
+            {
+                string message = "Unknown option: " + optionCharacter;
+                logger.Error(message);
+                throw new ArgumentException(message);
+            }
+
+            return i;
         }
 
         /// <summary>
@@ -235,7 +262,7 @@ namespace IISLogMuncher
         /// </summary>
         /// <param name="value"></param>
         /// <returns></returns>
-        private bool validOptions(string value)
+        private bool areOnlyValidCharactersUsedForOptions(string value)
         {
             return Regex.Matches(value, @"^[a-zA-Z0-9:]*$").Count != 0;
         }
