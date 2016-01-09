@@ -2,18 +2,24 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Text.RegularExpressions;
+using static IISLogMuncher.Util;
 
 namespace IISLogMuncher
 {
     public class CommandLineProcessor
     {
+        // NLog
         private static Logger logger = LogManager.GetCurrentClassLogger();
+
+        // Dictionary of known options
         private Dictionary<char, string> optionDictionary = null;
+
+        // Constants used for options
         private const char OptionIndicator = '-';
         private const char OptionArgument = ':';
         private const string OptionNoArgument = "";
+
         private string options;
 
         #region properties
@@ -26,18 +32,17 @@ namespace IISLogMuncher
             {
                 return options;
             }
+
             set
             {
-                if (value != null)
+                if (value != null && areOnlyValidCharactersUsedForOptions(value))
                 {
                     options = value;
                     optionDictionary = buildOptionDictionary(options);
                 }
                 else
                 {
-                    string message = "Options must be non-null.";
-                    logger.Error(message);
-                    throw new ArgumentException(message);
+                    LogAndThrowException(new ArgumentException("Options must be non-null and contain characters from [a-zA-Z0-9:]."));
                 }
             }
         }
@@ -64,9 +69,7 @@ namespace IISLogMuncher
             }
             else
             {
-                string message = "Options must be non-null.";
-                logger.Error(message);
-                throw new ArgumentException(message);
+                LogAndThrowException(new ArgumentException("Options must be non-null."));
             }
         }
         #endregion
@@ -86,40 +89,64 @@ namespace IISLogMuncher
             {
                 if (couldBeAnOption(newArgs[i]) && newArgs[i].Length > 1)
                 {
-                    char optionCharacter = newArgs[i].ElementAt(1);
-                    if (isKnownOption(optionCharacter))
+                    i = processPossibleOption(newArgs, clo, i);
+                }
+                else
+                {
+                    processNonOption(newArgs, clo, i);
+                }
+            }
+            return clo;
+        }
+
+        /// <summary>
+        /// Handle cases where this clearly isn't an option of the form '-x'.
+        /// </summary>
+        /// <param name="newArgs"></param>
+        /// <param name="clo"></param>
+        /// <param name="i"></param>
+        private void processNonOption(List<string> newArgs, CommandLineOptions clo, int i)
+        {
+            clo.AddNonOption(newArgs[i]);
+        }
+
+        /// <summary>
+        /// Handle cases where this *could be* an option like '-x'. Where it is a possible option is
+        /// in the fact that someone might use '-x' but 'x' is not a declared option in the option list.
+        /// </summary>
+        /// <param name="newArgs"></param>
+        /// <param name="clo"></param>
+        /// <param name="i"></param>
+        /// <returns></returns>
+        private int processPossibleOption(List<string> newArgs, CommandLineOptions clo, int i)
+        {
+            char optionCharacter = newArgs[i].ElementAt(1);
+            if (isKnownOption(optionCharacter))
+            {
+                if (expectsOptionArgument(optionCharacter))
+                {
+                    if (i < newArgs.Count - 1)
                     {
-                        if (expectsOptionArgument(optionCharacter))
-                        {
-                            if (i < newArgs.Count - 1)
-                            {
-                                clo.SetOption(optionCharacter, newArgs[++i]);
-                            }
-                            else
-                            {
-                                string message = "Missing argument for: " + optionCharacter;
-                                logger.Error(message);
-                                throw new ArgumentException(message);
-                            }
-                        }
-                        else
-                        {
-                            clo.SetOption(optionCharacter, OptionNoArgument);
-                        }
+                        clo.SetOption(optionCharacter, newArgs[++i]);
                     }
                     else
                     {
-                        string message = "Unknown option: " + optionCharacter;
+                        string message = "Missing argument for: " + optionCharacter;
                         logger.Error(message);
                         throw new ArgumentException(message);
                     }
                 }
                 else
                 {
-                    clo.AddNonOption(newArgs[i]);
+                    clo.SetOption(optionCharacter, OptionNoArgument);
                 }
             }
-            return clo;
+            else
+            {
+                LogAndThrowException(new ArgumentException("Unknown option: " + optionCharacter));
+            }
+
+            return i;
         }
 
         /// <summary>
@@ -129,8 +156,7 @@ namespace IISLogMuncher
         /// <returns></returns>
         private bool couldBeAnOption(string v)
         {
-            if (!string.IsNullOrEmpty(v) && 
-                    v.ElementAt(0) == OptionIndicator)
+            if (!string.IsNullOrEmpty(v) && v.ElementAt(0) == OptionIndicator)
                 return true;
             else
                 return false;
@@ -148,7 +174,7 @@ namespace IISLogMuncher
             {
                 if (i < listOfOptions.Length - 1 && Options[i + 1] == OptionArgument)
                 {
-                    od.Add(listOfOptions.ElementAt(i++), OptionArgument.ToString());
+                    od.Add(listOfOptions.ElementAt(i++), OptionArgument.ToString()); // skip colon
                 }
                 else
                 {
@@ -199,16 +225,11 @@ namespace IISLogMuncher
         /// <returns></returns>
         private bool isKnownOption(char option)
         {
-            if (optionDictionary != null)
+            if (optionDictionary == null)
             {
-                return optionDictionary.ContainsKey(option);
+                LogAndThrowException(new ArgumentException("No options defined."));
             }
-            else
-            {
-                string message = "No options defined.";
-                logger.Error(message);
-                throw new ArgumentException(message);
-            }
+            return true;
         }
 
         /// <summary>
@@ -224,8 +245,20 @@ namespace IISLogMuncher
                 optionDictionary.TryGetValue(option, out value);
                 return (value == OptionArgument.ToString());
             }
+            else
+            {
+                return false;
+            }
+        }
 
-            return false;
+        /// <summary>
+        /// Are these options valid? Must be alphanumeric or colon
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        private bool areOnlyValidCharactersUsedForOptions(string value)
+        {
+            return Regex.Matches(value, @"^[a-zA-Z0-9:]*$").Count != 0;
         }
         #endregion
     }

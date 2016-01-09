@@ -29,6 +29,38 @@ namespace IISLogMuncher.Tests
                 clp = null;
             }
 
+            // Test for valid options being supplied
+            [Test]
+            public void ProcessArgs_ValidOptions_NoExceptionThrown()
+            {
+                // arrange
+                CommandLineOptions expected = new CommandLineOptions();
+                string[] args = { };
+                clp.Options = "azAZ09:";
+
+                // act
+                actual = clp.ProcessArgs(args);
+
+                // assert -- should get here no problem
+                Assert.True(true);
+            }
+
+            // Test empty args
+            [Test]
+            [ExpectedException(typeof(ArgumentException))]
+            public void ProcessArgs_InvalidOptionsSpace_ExceptionThrown()
+            {
+                // arrange
+                CommandLineOptions expected = new CommandLineOptions();
+                string[] args = { };
+                clp.Options = "azAz09: ";
+
+                // act
+                actual = clp.ProcessArgs(args);
+
+                // assert -- should not get here
+            }
+
             // Test empty args
             [Test]
             public void ProcessArgs_NoneSupplied_NoneReturned()

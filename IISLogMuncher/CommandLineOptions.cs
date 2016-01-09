@@ -1,13 +1,15 @@
-﻿using System;
+﻿using NLog;
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using static IISLogMuncher.Util;
 
 namespace IISLogMuncher
 {
     public class CommandLineOptions
     {
+        // NLog
+        private static Logger logger = LogManager.GetCurrentClassLogger();
+
         private Dictionary<char, string> options = null;
         private List<string> nonOptions = null;
 
@@ -40,14 +42,12 @@ namespace IISLogMuncher
         /// <returns></returns>
         public string GetOption(char option)
         {
-            if (IsOptionSet(option))
+            if (!IsOptionSet(option))
             {
-                return options[option];
+                LogAndThrowException(new InvalidOperationException("Option: " + option + " does not exist."));
             }
-            else
-            {
-                throw new InvalidOperationException("Option: " + option + " does not exist.");
-            }
+
+            return options[option];
         }
 
         /// <summary>
