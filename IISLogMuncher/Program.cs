@@ -16,7 +16,7 @@ namespace IISLogMuncher
         {
             logger.Info("IIS Log Muncher (" + Assembly.GetExecutingAssembly().GetName().Version.ToString() + ")" + " starting.");
 
-            var clp = new CommandLineProcessor("hs:");
+            var clp = new CommandLineProcessor("ehs:");
             var clo = clp.ProcessArgs(args);
 
             if (clo.IsOptionSet('h'))

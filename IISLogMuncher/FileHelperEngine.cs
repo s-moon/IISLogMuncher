@@ -18,7 +18,11 @@ namespace IISLogMuncher
                 engine.Options.IgnoreFirstLines = Int32.Parse(clo.GetOption('s'));
             }
 
-            engine.Options.IgnoreEmptyLines = true;
+            if (clo.IsOptionSet('e'))
+            {
+                engine.Options.IgnoreEmptyLines = true;
+            }
+            
             var records = engine.ReadFile(@"E:\Projects\Open Source\IISLogMuncher\input.txt");
 
             foreach (var record in records)
