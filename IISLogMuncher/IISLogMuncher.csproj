@@ -53,6 +53,7 @@
   <ItemGroup>
     <Compile Include="CommandLineOptions.cs" />
     <Compile Include="CommandLineProcessor.cs" />
+    <Compile Include="FileHelperEngine.cs" />
     <Compile Include="IISLogEntry.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
