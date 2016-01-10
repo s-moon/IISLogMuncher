@@ -31,6 +31,11 @@ namespace IISLogMuncher
                 logger.Info("[" + file + "]");
                 var records = engine.ReadFile(@"E:\Projects\Open Source\IISLogMuncher\" + file);
 
+                if (clo.IsOptionSet('c'))
+                {
+                    Console.WriteLine("Records: {0}", records.Count());
+                }
+
                 foreach (var record in records)
                 {
                     Console.WriteLine(record.date);

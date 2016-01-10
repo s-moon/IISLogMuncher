@@ -16,7 +16,7 @@ namespace IISLogMuncher
         {
             logger.Info("IIS Log Muncher (" + Assembly.GetExecutingAssembly().GetName().Version.ToString() + ")" + " starting.");
 
-            var clp = new CommandLineProcessor("his:");
+            var clp = new CommandLineProcessor("chis:");
             var clo = clp.ProcessArgs(args);
 
             if (clo.IsOptionSet('h'))
@@ -38,6 +38,7 @@ namespace IISLogMuncher
             Console.WriteLine("IIS Log Muncher v" + version.Major + "." + version.Minor);
             Console.WriteLine();
             Console.WriteLine("Options:");
+            Console.WriteLine("-c".PadLeft(leftPadding, ' ') + " : count number of records");
             Console.WriteLine("-h".PadLeft(leftPadding, ' ') + " : this help text");
             Console.WriteLine("-i".PadLeft(leftPadding, ' ') + " : ignore empty lines");
             Console.WriteLine("-s <number>".PadLeft(leftPadding, ' ') + " : skip <number> lines from start of input file");
