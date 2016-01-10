@@ -18,7 +18,7 @@ namespace IISLogMuncher
                 engine.Options.IgnoreFirstLines = Int32.Parse(clo.GetOption('s'));
             }
 
-            if (clo.IsOptionSet('e'))
+            if (clo.IsOptionSet('i'))
             {
                 engine.Options.IgnoreEmptyLines = true;
             }
