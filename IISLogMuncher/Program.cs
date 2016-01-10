@@ -39,6 +39,7 @@ namespace IISLogMuncher
             Console.WriteLine();
             Console.WriteLine("Options:");
             Console.WriteLine("-h".PadLeft(leftPadding, ' ') + " : this help text");
+            Console.WriteLine("-i".PadLeft(leftPadding, ' ') + " : ignore empty lines");
             Console.WriteLine("-s <number>".PadLeft(leftPadding, ' ') + " : skip <number> lines from start of input file");
             Console.WriteLine("".PadLeft(linePadding, '-'));
         }
