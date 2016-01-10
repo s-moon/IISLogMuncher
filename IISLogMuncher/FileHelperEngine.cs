@@ -22,12 +22,15 @@ namespace IISLogMuncher
             {
                 engine.Options.IgnoreEmptyLines = true;
             }
-            
-            var records = engine.ReadFile(@"E:\Projects\Open Source\IISLogMuncher\input.txt");
 
-            foreach (var record in records)
+            foreach (var file in clo.GetNonOptions())
             {
-                Console.WriteLine(record.date);
+                var records = engine.ReadFile(@"E:\Projects\Open Source\IISLogMuncher\" + file);
+
+                foreach (var record in records)
+                {
+                    Console.WriteLine(record.date);
+                }
             }
         }
     }
