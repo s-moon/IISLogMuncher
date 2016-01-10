@@ -1,4 +1,5 @@
 ﻿using FileHelpers;
+using NLog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,8 @@ namespace IISLogMuncher
 {
     public class FileHelperEngine
     {
+        private static Logger logger = LogManager.GetCurrentClassLogger();
+
         public FileHelperEngine(CommandLineOptions clo)
         {
             var engine = new FileHelperEngine<IISLogEntry>();
@@ -25,6 +28,7 @@ namespace IISLogMuncher
 
             foreach (var file in clo.GetNonOptions())
             {
+                logger.Info("[" + file + "]");
                 var records = engine.ReadFile(@"E:\Projects\Open Source\IISLogMuncher\" + file);
 
                 foreach (var record in records)
