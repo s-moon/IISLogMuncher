@@ -22,7 +22,7 @@ namespace IISLogMuncher
 
         public string cs_uri_query;
 
-        public string s_port;
+        public long s_port;
 
         public string cs_username;
 
@@ -30,15 +30,15 @@ namespace IISLogMuncher
 
         public string cs;
 
-        public string sc_status;
+        public long sc_status;
 
-        public string sc_substatus;
+        public long sc_substatus;
 
-        public string sc_win32_status;
+        public long sc_win32_status;
 
-        public string sc_bytes;
+        public long sc_bytes;
 
-        public string time_taken;
+        public long time_taken;
 
     }
 }
