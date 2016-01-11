@@ -13,7 +13,8 @@ namespace IISLogMuncher
         [FieldConverter(ConverterKind.Date, "yyyy-MM-dd")]
         public DateTime date;
 
-        public string time;
+        [FieldConverter(ConverterKind.Date, "HH:mm:ss")]
+        public DateTime time;
 
         public string cs_method;
 
