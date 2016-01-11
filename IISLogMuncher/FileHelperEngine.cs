@@ -29,7 +29,8 @@ namespace IISLogMuncher
             foreach (var file in clo.GetNonOptions())
             {
                 logger.Info("[" + file + "]");
-                var records = engine.ReadFile(@"E:\Projects\Open Source\IISLogMuncher\" + file);
+                //var records = engine.ReadFile(@"E:\Projects\Open Source\IISLogMuncher\" + file);
+                var records = engine.ReadFile(@"D:\StephenMoon\GitHub\IISLogMuncher\" + file);
 
                 if (clo.IsOptionSet('c'))
                 {
@@ -38,7 +39,7 @@ namespace IISLogMuncher
 
                 foreach (var record in records)
                 {
-                    Console.WriteLine(record.date);
+                    //Console.WriteLine(record.date);
                 }
             }
         }
