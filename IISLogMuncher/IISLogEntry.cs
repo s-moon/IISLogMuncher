@@ -10,7 +10,8 @@ namespace IISLogMuncher
     [DelimitedRecord(" ")]
     public class IISLogEntry
     {
-        public string date;
+        [FieldConverter(ConverterKind.Date, "yyyy-MM-dd")]
+        public DateTime date;
 
         public string time;
 
