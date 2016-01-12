@@ -38,6 +38,7 @@ namespace IISLogMuncher
         private void ProcessFile(CommandLineOptions clo, IISLogEntry[] records)
         {
             Dictionary<string, int> ips = new Dictionary<string, int>();
+            Dictionary<string, int> mutedIps = new Dictionary<string, int>();
             int val;
 
             if (clo.IsOptionSet('c'))
@@ -51,13 +52,31 @@ namespace IISLogMuncher
                     ips[entry.c_ip]++;
                 else
                     ips.Add(entry.c_ip, 1);
+
+                if (mutedIps.TryGetValue(mutedIP(entry.c_ip), out val))
+                    mutedIps[mutedIP(entry.c_ip)]++;
+                else
+                    mutedIps.Add(mutedIP(entry.c_ip), 1);
             }
 
             // sort list
+            Console.WriteLine("Top 10 IP hits");
             foreach (var ip in ips.OrderByDescending(v => v.Value).Take(10))
             {
                 Console.WriteLine(ip.Key.PadRight(16) + ip.Value);
             }
+
+            Console.WriteLine();
+            Console.WriteLine("Top 10 IP groups");
+            foreach (var mutedIp in mutedIps.OrderByDescending(v => v.Value).Take(10))
+            {
+                Console.WriteLine(mutedIp.Key.PadRight(16) + mutedIp.Value);
+            }
+        }
+
+        private string mutedIP(string ip)
+        {
+            return ip.Substring(0, ip.LastIndexOf("."));
         }
     }
 }
