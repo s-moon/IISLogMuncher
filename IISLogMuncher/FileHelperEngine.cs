@@ -31,16 +31,20 @@ namespace IISLogMuncher
                 logger.Info("[" + file + "]");
                 //var records = engine.ReadFile(@"E:\Projects\Open Source\IISLogMuncher\" + file);
                 var records = engine.ReadFile(@"D:\StephenMoon\GitHub\IISLogMuncher\" + file);
+                ProcessFile(clo, records);
+            }
+        }
 
-                if (clo.IsOptionSet('c'))
-                {
-                    Console.WriteLine("Records: {0}", records.Count());
-                }
+        private void ProcessFile(CommandLineOptions clo, IISLogEntry[] records)
+        {
+            if (clo.IsOptionSet('c'))
+            {
+                Console.WriteLine("Records: {0}", records.Count());
+            }
 
-                foreach (var record in records)
-                {
-                    //Console.WriteLine(record.date);
-                }
+            foreach (var entry in records)
+            {
+
             }
         }
     }
