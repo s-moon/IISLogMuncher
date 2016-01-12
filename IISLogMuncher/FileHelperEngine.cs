@@ -37,6 +37,9 @@ namespace IISLogMuncher
 
         private void ProcessFile(CommandLineOptions clo, IISLogEntry[] records)
         {
+            Dictionary<string, int> ips = new Dictionary<string, int>();
+            int val;
+
             if (clo.IsOptionSet('c'))
             {
                 Console.WriteLine("Records: {0}", records.Count());
@@ -44,7 +47,16 @@ namespace IISLogMuncher
 
             foreach (var entry in records)
             {
+                if (ips.TryGetValue(entry.c_ip, out val))
+                    ips[entry.c_ip]++;
+                else
+                    ips.Add(entry.c_ip, 1);
+            }
 
+            // sort list
+            foreach (var ip in ips.OrderByDescending(v => v.Value).Take(10))
+            {
+                Console.WriteLine(ip.Key.PadRight(16) + ip.Value);
             }
         }
     }
