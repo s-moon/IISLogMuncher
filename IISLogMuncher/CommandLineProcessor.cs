@@ -1,8 +1,9 @@
 ﻿using NLog;
 using System;
-using System.Collections.Generic;
 using System.Linq;
+using System.Collections.Generic;
 using System.Text.RegularExpressions;
+using System.Configuration;
 using static IISLogMuncher.Util;
 
 namespace IISLogMuncher
@@ -85,6 +86,9 @@ namespace IISLogMuncher
             var newArgs = reconstructSquashedArgumentsIntoSpacedArguments(args);
 
             var clo = new CommandLineOptions();
+
+            setDefaultArgumentsIfAny(clo);
+
             for (int i = 0; i < newArgs.Count; i++)
             {
                 if (couldBeAnOption(newArgs[i]) && newArgs[i].Length > 1)
@@ -98,6 +102,31 @@ namespace IISLogMuncher
             }
             return clo;
         }
+
+        private void setDefaultArgumentsIfAny(CommandLineOptions clo)
+        {
+            string setting;
+
+            if ((setting = readSetting("defaultTOption")) != "Not Found")
+            {
+                clo.SetOption('t', setting);
+            }
+        }
+
+        private string readSetting(string key)
+        {
+            try
+            {
+                var appSettings = ConfigurationManager.AppSettings;
+                return appSettings[key] ?? "Not Found";
+            }
+            catch (ConfigurationErrorsException)
+            {
+                LogAndThrowException(new InvalidOperationException("Error reading app setting: " + key));
+                return null;
+            }
+        }
+
 
         /// <summary>
         /// Handle cases where this clearly isn't an option of the form '-x'.
