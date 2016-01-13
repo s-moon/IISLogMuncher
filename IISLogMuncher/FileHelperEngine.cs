@@ -40,11 +40,17 @@ namespace IISLogMuncher
             Dictionary<string, int> ips = new Dictionary<string, int>();
             Dictionary<string, int> mutedIps = new Dictionary<string, int>();
             Dictionary<string, int> popularStems = new Dictionary<string, int>();
+            int topResults = 10;
             int val;
 
             if (clo.IsOptionSet('c'))
             {
                 Console.WriteLine("Records: {0}", records.Count());
+            }
+
+            if (clo.IsOptionSet('t'))
+            {
+                topResults = Int32.Parse(clo.GetOption('t'));
             }
 
             foreach (var entry in records)
@@ -66,22 +72,22 @@ namespace IISLogMuncher
             }
 
             // sort list
-            Console.WriteLine("Top 10 IP hits");
-            foreach (var ip in ips.OrderByDescending(v => v.Value).Take(10))
+            Console.WriteLine("Top " + topResults + " IP hits");
+            foreach (var ip in ips.OrderByDescending(v => v.Value).Take(topResults))
             {
                 Console.WriteLine(ip.Key.PadRight(16) + ip.Value);
             }
 
             Console.WriteLine();
-            Console.WriteLine("Top 10 IP groups");
-            foreach (var mutedIp in mutedIps.OrderByDescending(v => v.Value).Take(10))
+            Console.WriteLine("Top " + topResults + " IP groups");
+            foreach (var mutedIp in mutedIps.OrderByDescending(v => v.Value).Take(topResults))
             {
                 Console.WriteLine(mutedIp.Key.PadRight(16) + mutedIp.Value);
             }
 
             Console.WriteLine();
-            Console.WriteLine("Top 10 Popular stems");
-            foreach (var popularPage in popularStems.OrderByDescending(v => v.Value).Take(10))
+            Console.WriteLine("Top " + topResults + " Popular stems");
+            foreach (var popularPage in popularStems.OrderByDescending(v => v.Value).Take(topResults))
             {
                 Console.WriteLine(popularPage.Value);
                 Console.WriteLine(popularPage.Key);
