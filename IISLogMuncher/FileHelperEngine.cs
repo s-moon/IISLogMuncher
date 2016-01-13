@@ -39,6 +39,7 @@ namespace IISLogMuncher
         {
             Dictionary<string, int> ips = new Dictionary<string, int>();
             Dictionary<string, int> mutedIps = new Dictionary<string, int>();
+            Dictionary<string, int> popularStems = new Dictionary<string, int>();
             int val;
 
             if (clo.IsOptionSet('c'))
@@ -57,6 +58,11 @@ namespace IISLogMuncher
                     mutedIps[mutedIP(entry.c_ip)]++;
                 else
                     mutedIps.Add(mutedIP(entry.c_ip), 1);
+
+                if (popularStems.TryGetValue(entry.cs_uri_stem, out val))
+                    popularStems[entry.cs_uri_stem]++;
+                else
+                    popularStems.Add(entry.cs_uri_stem, 1);
             }
 
             // sort list
@@ -71,6 +77,15 @@ namespace IISLogMuncher
             foreach (var mutedIp in mutedIps.OrderByDescending(v => v.Value).Take(10))
             {
                 Console.WriteLine(mutedIp.Key.PadRight(16) + mutedIp.Value);
+            }
+
+            Console.WriteLine();
+            Console.WriteLine("Top 10 Popular stems");
+            foreach (var popularPage in popularStems.OrderByDescending(v => v.Value).Take(10))
+            {
+                Console.WriteLine(popularPage.Value);
+                Console.WriteLine(popularPage.Key);
+                Console.WriteLine("~-~-");
             }
         }
 
