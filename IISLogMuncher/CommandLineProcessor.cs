@@ -108,7 +108,7 @@ namespace IISLogMuncher
             string setting;
             foreach (char o in this.Options)
             {
-                if (char.IsLetter(o) && (setting = readSetting("default" + o + "Option")) != "Not Found")
+                if (char.IsLetter(o) && (setting = readSetting(o + "OptionDefault")) != "Not Found")
                 {
                     clo.SetOption(o, setting);
                 }
