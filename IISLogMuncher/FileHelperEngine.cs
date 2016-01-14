@@ -38,14 +38,16 @@ namespace IISLogMuncher
         private void ProcessFile(CommandLineOptions clo, IISLogEntry[] records)
         {
             Dictionary<string, int> ips = new Dictionary<string, int>();
-            Dictionary<string, int> mutedIps = new Dictionary<string, int>();
+            Dictionary<string, int> twoOctetsOfIP = new Dictionary<string, int>();
+            Dictionary<string, int> threeOctetsOfIP = new Dictionary<string, int>();
             Dictionary<string, int> popularStems = new Dictionary<string, int>();
             int topResults = 10;
             int val;
 
             if (clo.IsOptionSet('c'))
             {
-                Console.WriteLine("Records: {0}", records.Count());
+                displayRecordCount(records.Count());
+                Console.WriteLine();
             }
 
             if (clo.IsOptionSet('t'))
@@ -60,10 +62,15 @@ namespace IISLogMuncher
                 else
                     ips.Add(entry.c_ip, 1);
 
-                if (mutedIps.TryGetValue(mutedIP(entry.c_ip), out val))
-                    mutedIps[mutedIP(entry.c_ip)]++;
+                if (twoOctetsOfIP.TryGetValue(squashIntoOctetsOfIPAddress(entry.c_ip, 2), out val))
+                    twoOctetsOfIP[squashIntoOctetsOfIPAddress(entry.c_ip, 2)]++;
                 else
-                    mutedIps.Add(mutedIP(entry.c_ip), 1);
+                    twoOctetsOfIP.Add(squashIntoOctetsOfIPAddress(entry.c_ip, 2), 1);
+
+                if (threeOctetsOfIP.TryGetValue(squashIntoOctetsOfIPAddress(entry.c_ip, 3), out val))
+                    threeOctetsOfIP[squashIntoOctetsOfIPAddress(entry.c_ip, 3)]++;
+                else
+                    threeOctetsOfIP.Add(squashIntoOctetsOfIPAddress(entry.c_ip, 3), 1);
 
                 if (popularStems.TryGetValue(entry.cs_uri_stem, out val))
                     popularStems[entry.cs_uri_stem]++;
@@ -71,22 +78,28 @@ namespace IISLogMuncher
                     popularStems.Add(entry.cs_uri_stem, 1);
             }
 
-            // sort list
-            Console.WriteLine("Top " + topResults + " IP hits");
+            outputHeading("Top " + topResults + " IP requests");
             foreach (var ip in ips.OrderByDescending(v => v.Value).Take(topResults))
             {
                 Console.WriteLine(ip.Key.PadRight(16) + ip.Value);
             }
 
             Console.WriteLine();
-            Console.WriteLine("Top " + topResults + " IP groups");
-            foreach (var mutedIp in mutedIps.OrderByDescending(v => v.Value).Take(topResults))
+            outputHeading("Top " + topResults + " 3 octet IP requests");
+            foreach (var ip in threeOctetsOfIP.OrderByDescending(v => v.Value).Take(topResults))
             {
-                Console.WriteLine(mutedIp.Key.PadRight(16) + mutedIp.Value);
+                Console.WriteLine(ip.Key.PadRight(16) + ip.Value);
             }
 
             Console.WriteLine();
-            Console.WriteLine("Top " + topResults + " Popular stems");
+            outputHeading("Top " + topResults + " 2 octet IP requests");
+            foreach (var ip in twoOctetsOfIP.OrderByDescending(v => v.Value).Take(topResults))
+            {
+                Console.WriteLine(ip.Key.PadRight(16) + ip.Value);
+            }
+
+            Console.WriteLine();
+            outputHeading("Top " + topResults + " popular stems");
             foreach (var popularPage in popularStems.OrderByDescending(v => v.Value).Take(topResults))
             {
                 Console.WriteLine(popularPage.Value);
@@ -95,9 +108,30 @@ namespace IISLogMuncher
             }
         }
 
-        private string mutedIP(string ip)
+        private void outputHeading(string heading)
         {
-            return ip.Substring(0, ip.LastIndexOf("."));
+            Console.WriteLine(heading);
+            Console.WriteLine("=".PadLeft(heading.Length, '='));
+        }
+
+        private void displayRecordCount(int c)
+        {
+            outputHeading("Records: " + c);
+        }
+
+        private string squashIntoOctetsOfIPAddress(string ip, int octets)
+        {
+            int pos = 0;
+            for (int i = 0; i < octets; i++)
+            {
+                pos = ip.IndexOf('.', pos);
+                if (pos == -1)
+                {
+                    return string.Empty;
+                }
+                pos++;
+            }
+            return ip.Substring(0, pos - 1);
         }
     }
 }
