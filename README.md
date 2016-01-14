@@ -10,8 +10,8 @@ accessing certain resources on your site? This is the tool for you!
 ## Example File
 
 ## Usage
-iislogmuncher [options] filelist
 ```
+iislogmuncher [options] filelist
 -c: count number of records in the file
 -h: show help text
 -i: ignore blank lines
