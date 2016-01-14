@@ -106,10 +106,12 @@ namespace IISLogMuncher
         private void setDefaultArgumentsIfAny(CommandLineOptions clo)
         {
             string setting;
-
-            if ((setting = readSetting("defaultTOption")) != "Not Found")
+            foreach (char o in this.Options)
             {
-                clo.SetOption('t', setting);
+                if (char.IsLetter(o) && (setting = readSetting("default" + o + "Option")) != "Not Found")
+                {
+                    clo.SetOption(o, setting);
+                }
             }
         }
 
