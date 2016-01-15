@@ -95,6 +95,16 @@ namespace IISLogMuncher
             Console.WriteLine("{0:0}", hitsPerSecond.Values.Average());
 
             Console.WriteLine();
+            outputHeading("Average hits per second, by hour");
+            var groupedHourlyList = hitsPerSecond.GroupBy(u => u.Key.Hour)
+                                      .Select(grp => new { GroupID = grp.Key, subList = grp.ToList() })
+                                      .ToList();
+            foreach (var hourlyHits in groupedHourlyList)
+            {
+                Console.WriteLine("{0,2}-{1,2} : {2:0}", hourlyHits.GroupID, hourlyHits.GroupID+ 1, hourlyHits.subList.Average(c => c.Value));
+            }
+
+            Console.WriteLine();
             outputHeading("Top " + topResults + " IP requests");
             foreach (var ip in ips.OrderByDescending(v => v.Value).Take(topResults))
             {
