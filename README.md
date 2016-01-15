@@ -10,7 +10,14 @@ accessing certain resources on your site? This is the tool for you!
 ## Example File
 
 ## Usage
-
+```
+iislogmuncher [options] filelist
+-c: count number of records in the file
+-h: show help text
+-i: ignore blank lines
+-s <number>: number of lines to skip at the start of the file
+-t <number>: how many records to show in summaries
+```
 ## Example Output
 
 ## Technologies Used
