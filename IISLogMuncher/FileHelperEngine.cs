@@ -48,7 +48,6 @@ namespace IISLogMuncher
             if (clo.IsOptionSet('c'))
             {
                 displayRecordCount(records.Count());
-                Console.WriteLine();
             }
 
             if (clo.IsOptionSet('t'))
@@ -84,12 +83,18 @@ namespace IISLogMuncher
                     hitsPerSecond.Add(entry.time, 1);
             }
 
+            Console.WriteLine();
             outputHeading("Top " + topResults + " hits per second");
             foreach (var hits in hitsPerSecond.OrderByDescending(v => v.Value).Take(topResults))
             {
                 Console.WriteLine(hits.Key + " " + hits.Value);
             }
 
+            Console.WriteLine();
+            outputHeading("Average hits per second");
+            Console.WriteLine("{0:0}", hitsPerSecond.Values.Average());
+
+            Console.WriteLine();
             outputHeading("Top " + topResults + " IP requests");
             foreach (var ip in ips.OrderByDescending(v => v.Value).Take(topResults))
             {
