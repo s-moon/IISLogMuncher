@@ -41,6 +41,7 @@ namespace IISLogMuncher
             Dictionary<string, int> twoOctetsOfIP = new Dictionary<string, int>();
             Dictionary<string, int> threeOctetsOfIP = new Dictionary<string, int>();
             Dictionary<string, int> popularStems = new Dictionary<string, int>();
+            Dictionary<DateTime, int> hitsPerSecond = new Dictionary<DateTime, int>();
             int topResults = 10;
             int val;
 
@@ -76,6 +77,17 @@ namespace IISLogMuncher
                     popularStems[entry.cs_uri_stem]++;
                 else
                     popularStems.Add(entry.cs_uri_stem, 1);
+
+                if (hitsPerSecond.TryGetValue(entry.time, out val))
+                    hitsPerSecond[entry.time]++;
+                else
+                    hitsPerSecond.Add(entry.time, 1);
+            }
+
+            outputHeading("Top " + topResults + " hits per second");
+            foreach (var hits in hitsPerSecond.OrderByDescending(v => v.Value).Take(topResults))
+            {
+                Console.WriteLine(hits.Key + " " + hits.Value);
             }
 
             outputHeading("Top " + topResults + " IP requests");
