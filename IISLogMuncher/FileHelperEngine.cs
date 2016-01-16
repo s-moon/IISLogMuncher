@@ -101,7 +101,7 @@ namespace IISLogMuncher
                                       .ToList();
             foreach (var hourlyHits in groupedHourlyList)
             {
-                Console.WriteLine("{0,2}-{1,2} : {2:0}", hourlyHits.GroupID, hourlyHits.GroupID+ 1, hourlyHits.subList.Average(c => c.Value));
+                Console.WriteLine("{0,2:D2}-{1,2:D2} : {2:0}", hourlyHits.GroupID, hourlyHits.GroupID+ 1, hourlyHits.subList.Average(c => c.Value));
             }
 
             Console.WriteLine();
