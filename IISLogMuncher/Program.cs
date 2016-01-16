@@ -43,6 +43,7 @@ namespace IISLogMuncher
             Console.WriteLine("-i".PadLeft(leftPadding, ' ') + " : ignore empty lines");
             Console.WriteLine("-s <number>".PadLeft(leftPadding, ' ') + " : skip <number> lines from start of input file");
             Console.WriteLine("-t <number>".PadLeft(leftPadding, ' ') + " : top <number> of results to show in summaries");
+            Console.WriteLine("See app.config for default options.");
             Console.WriteLine("".PadLeft(linePadding, '-'));
         }
     }
