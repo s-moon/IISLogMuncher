@@ -2,6 +2,7 @@
 using NLog;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -35,9 +36,18 @@ namespace IISLogMuncher
                     //var records = engine.ReadFile(@"D:\StephenMoon\GitHub\IISLogMuncher\" + file);
                     ProcessFile(clo, records);
                 }
-                catch (System.IO.DirectoryNotFoundException ex)
+                catch (DirectoryNotFoundException ex)
                 {
                     logger.Error("Error - Unable to reach directory: " + file + "; file will be skipped.");
+                }
+                catch (FileNotFoundException ex)
+                {
+                    logger.Error("Error - Unable to open file: " + file + "; file will be skipped.");
+                }
+                catch (Exception ex)
+                {
+                    logger.Error("Oops. Something catastrophic happened so skipping file: " + file);
+                    logger.Error(ex);
                 }
             }
         }
