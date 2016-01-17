@@ -29,9 +29,16 @@ namespace IISLogMuncher
             foreach (var file in clo.GetNonOptions())
             {
                 logger.Info("[" + file + "]");
-                var records = engine.ReadFile(@"E:\Projects\Open Source\IISLogMuncher\" + file);
-                //var records = engine.ReadFile(@"D:\StephenMoon\GitHub\IISLogMuncher\" + file);
-                ProcessFile(clo, records);
+                try
+                {
+                    var records = engine.ReadFile(@"E:\Projects\Open Source\IISLogMuncher\" + file);
+                    //var records = engine.ReadFile(@"D:\StephenMoon\GitHub\IISLogMuncher\" + file);
+                    ProcessFile(clo, records);
+                }
+                catch (System.IO.DirectoryNotFoundException ex)
+                {
+                    logger.Error("Error - Unable to reach directory: " + file + "; file will be skipped.");
+                }
             }
         }
 
