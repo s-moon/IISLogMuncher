@@ -21,7 +21,7 @@ namespace IISLogMuncher
             this.clo = clo;
         }
 
-        private void SetPertinentOptions()
+        private void SetEngineOptionsBasedOnCommandLine()
         {
             if (clo.IsOptionSet('s'))
             {
@@ -36,7 +36,7 @@ namespace IISLogMuncher
 
         public void ProcessFileList()
         {
-            SetPertinentOptions();
+            SetEngineOptionsBasedOnCommandLine();
             foreach (var file in clo.GetNonOptions())
             {
                 ProcessFile(file);
