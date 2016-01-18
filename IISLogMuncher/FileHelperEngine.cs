@@ -50,7 +50,7 @@ namespace IISLogMuncher
             {
                 //var records = engine.ReadFile(@"E:\Projects\Open Source\IISLogMuncher\" + file);
                 var records = engine.ReadFile(@"D:\StephenMoon\GitHub\IISLogMuncher\" + file);
-                ProvideFileStats(clo, records);
+                ProvideFileStats(records);
             }
             catch (DirectoryNotFoundException)
             {
@@ -67,7 +67,7 @@ namespace IISLogMuncher
             }
         }
 
-        private void ProvideFileStats(CommandLineOptions clo, IISLogEntry[] records)
+        private void ProvideFileStats(IISLogEntry[] records)
         {
             Dictionary<string, int> ips = new Dictionary<string, int>();
             Dictionary<string, int> twoOctetsOfIP = new Dictionary<string, int>();
