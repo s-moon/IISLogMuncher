@@ -21,6 +21,15 @@ namespace IISLogMuncher
             this.clo = clo;
         }
 
+        public void ProcessFileList()
+        {
+            SetEngineOptionsBasedOnCommandLine();
+            foreach (var file in clo.GetNonOptions())
+            {
+                ProcessFile(file);
+            }
+        }
+
         private void SetEngineOptionsBasedOnCommandLine()
         {
             if (clo.IsOptionSet('s'))
@@ -34,15 +43,6 @@ namespace IISLogMuncher
             }
         }
 
-        public void ProcessFileList()
-        {
-            SetEngineOptionsBasedOnCommandLine();
-            foreach (var file in clo.GetNonOptions())
-            {
-                ProcessFile(file);
-            }
-        }
-
         private void ProcessFile(string file)
         {
             logger.Info("[" + file + "]");
@@ -52,11 +52,11 @@ namespace IISLogMuncher
                 var records = engine.ReadFile(@"D:\StephenMoon\GitHub\IISLogMuncher\" + file);
                 ProvideFileStats(clo, records);
             }
-            catch (DirectoryNotFoundException ex)
+            catch (DirectoryNotFoundException)
             {
                 logger.Error("Error - Unable to reach directory: " + file + "; file will be skipped.");
             }
-            catch (FileNotFoundException ex)
+            catch (FileNotFoundException)
             {
                 logger.Error("Error - Unable to open file: " + file + "; file will be skipped.");
             }
