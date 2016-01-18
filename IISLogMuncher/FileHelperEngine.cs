@@ -94,15 +94,15 @@ namespace IISLogMuncher
                 else
                     ips.Add(entry.c_ip, 1);
 
-                if (twoOctetsOfIP.TryGetValue(SquashIntoOctetsOfIPAddress(entry.c_ip, 2), out val))
-                    twoOctetsOfIP[SquashIntoOctetsOfIPAddress(entry.c_ip, 2)]++;
+                if (twoOctetsOfIP.TryGetValue(SquashIPAddressIntoOctets(entry.c_ip, 2), out val))
+                    twoOctetsOfIP[SquashIPAddressIntoOctets(entry.c_ip, 2)]++;
                 else
-                    twoOctetsOfIP.Add(SquashIntoOctetsOfIPAddress(entry.c_ip, 2), 1);
+                    twoOctetsOfIP.Add(SquashIPAddressIntoOctets(entry.c_ip, 2), 1);
 
-                if (threeOctetsOfIP.TryGetValue(SquashIntoOctetsOfIPAddress(entry.c_ip, 3), out val))
-                    threeOctetsOfIP[SquashIntoOctetsOfIPAddress(entry.c_ip, 3)]++;
+                if (threeOctetsOfIP.TryGetValue(SquashIPAddressIntoOctets(entry.c_ip, 3), out val))
+                    threeOctetsOfIP[SquashIPAddressIntoOctets(entry.c_ip, 3)]++;
                 else
-                    threeOctetsOfIP.Add(SquashIntoOctetsOfIPAddress(entry.c_ip, 3), 1);
+                    threeOctetsOfIP.Add(SquashIPAddressIntoOctets(entry.c_ip, 3), 1);
 
                 if (popularStems.TryGetValue(entry.cs_uri_stem, out val))
                     popularStems[entry.cs_uri_stem]++;
@@ -178,7 +178,7 @@ namespace IISLogMuncher
             OutputHeading("Records: " + c);
         }
 
-        private string SquashIntoOctetsOfIPAddress(string ip, int octets)
+        private string SquashIPAddressIntoOctets(string ip, int octets)
         {
             int pos = 0;
             for (int i = 0; i < octets; i++)
