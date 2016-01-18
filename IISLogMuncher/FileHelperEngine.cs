@@ -12,11 +12,17 @@ namespace IISLogMuncher
     public class FileHelperEngine
     {
         private static Logger logger = LogManager.GetCurrentClassLogger();
+        private FileHelperEngine<IISLogEntry> engine;
+        private CommandLineOptions clo;
 
         public FileHelperEngine(CommandLineOptions clo)
         {
-            var engine = new FileHelperEngine<IISLogEntry>();
+            engine = new FileHelperEngine<IISLogEntry>();
+            this.clo = clo;
+        }
 
+        private void SetPertinentOptions()
+        {
             if (clo.IsOptionSet('s'))
             {
                 engine.Options.IgnoreFirstLines = Int32.Parse(clo.GetOption('s'));
@@ -26,33 +32,42 @@ namespace IISLogMuncher
             {
                 engine.Options.IgnoreEmptyLines = true;
             }
+        }
 
+        public void ProcessFileList()
+        {
+            SetPertinentOptions();
             foreach (var file in clo.GetNonOptions())
             {
-                logger.Info("[" + file + "]");
-                try
-                {
-                    var records = engine.ReadFile(@"E:\Projects\Open Source\IISLogMuncher\" + file);
-                    //var records = engine.ReadFile(@"D:\StephenMoon\GitHub\IISLogMuncher\" + file);
-                    ProcessFile(clo, records);
-                }
-                catch (DirectoryNotFoundException ex)
-                {
-                    logger.Error("Error - Unable to reach directory: " + file + "; file will be skipped.");
-                }
-                catch (FileNotFoundException ex)
-                {
-                    logger.Error("Error - Unable to open file: " + file + "; file will be skipped.");
-                }
-                catch (Exception ex)
-                {
-                    logger.Error("Oops. Something catastrophic happened so skipping file: " + file);
-                    logger.Error(ex);
-                }
+                ProcessFile(file);
             }
         }
 
-        private void ProcessFile(CommandLineOptions clo, IISLogEntry[] records)
+        private void ProcessFile(string file)
+        {
+            logger.Info("[" + file + "]");
+            try
+            {
+                //var records = engine.ReadFile(@"E:\Projects\Open Source\IISLogMuncher\" + file);
+                var records = engine.ReadFile(@"D:\StephenMoon\GitHub\IISLogMuncher\" + file);
+                ProvideFileStats(clo, records);
+            }
+            catch (DirectoryNotFoundException ex)
+            {
+                logger.Error("Error - Unable to reach directory: " + file + "; file will be skipped.");
+            }
+            catch (FileNotFoundException ex)
+            {
+                logger.Error("Error - Unable to open file: " + file + "; file will be skipped.");
+            }
+            catch (Exception ex)
+            {
+                logger.Error("Oops. Something catastrophic happened so skipping file: " + file);
+                logger.Error(ex);
+            }
+        }
+
+        private void ProvideFileStats(CommandLineOptions clo, IISLogEntry[] records)
         {
             Dictionary<string, int> ips = new Dictionary<string, int>();
             Dictionary<string, int> twoOctetsOfIP = new Dictionary<string, int>();

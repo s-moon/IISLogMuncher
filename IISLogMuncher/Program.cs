@@ -25,6 +25,7 @@ namespace IISLogMuncher
             }
 
             var fhe = new FileHelperEngine(clo);
+            fhe.ProcessFileList();
 
             logger.Info("IIS Log Muncher finished.");
         }
