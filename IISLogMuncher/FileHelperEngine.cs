@@ -79,7 +79,7 @@ namespace IISLogMuncher
 
             if (clo.IsOptionSet('c'))
             {
-                displayRecordCount(records.Count());
+                DisplayRecordCount(records.Count());
             }
 
             if (clo.IsOptionSet('t'))
@@ -94,15 +94,15 @@ namespace IISLogMuncher
                 else
                     ips.Add(entry.c_ip, 1);
 
-                if (twoOctetsOfIP.TryGetValue(squashIntoOctetsOfIPAddress(entry.c_ip, 2), out val))
-                    twoOctetsOfIP[squashIntoOctetsOfIPAddress(entry.c_ip, 2)]++;
+                if (twoOctetsOfIP.TryGetValue(SquashIntoOctetsOfIPAddress(entry.c_ip, 2), out val))
+                    twoOctetsOfIP[SquashIntoOctetsOfIPAddress(entry.c_ip, 2)]++;
                 else
-                    twoOctetsOfIP.Add(squashIntoOctetsOfIPAddress(entry.c_ip, 2), 1);
+                    twoOctetsOfIP.Add(SquashIntoOctetsOfIPAddress(entry.c_ip, 2), 1);
 
-                if (threeOctetsOfIP.TryGetValue(squashIntoOctetsOfIPAddress(entry.c_ip, 3), out val))
-                    threeOctetsOfIP[squashIntoOctetsOfIPAddress(entry.c_ip, 3)]++;
+                if (threeOctetsOfIP.TryGetValue(SquashIntoOctetsOfIPAddress(entry.c_ip, 3), out val))
+                    threeOctetsOfIP[SquashIntoOctetsOfIPAddress(entry.c_ip, 3)]++;
                 else
-                    threeOctetsOfIP.Add(squashIntoOctetsOfIPAddress(entry.c_ip, 3), 1);
+                    threeOctetsOfIP.Add(SquashIntoOctetsOfIPAddress(entry.c_ip, 3), 1);
 
                 if (popularStems.TryGetValue(entry.cs_uri_stem, out val))
                     popularStems[entry.cs_uri_stem]++;
@@ -116,18 +116,18 @@ namespace IISLogMuncher
             }
 
             Console.WriteLine();
-            outputHeading("Top " + topResults + " hits per second");
+            OutputHeading("Top " + topResults + " hits per second");
             foreach (var hits in hitsPerSecond.OrderByDescending(v => v.Value).Take(topResults))
             {
                 Console.WriteLine(hits.Key + " " + hits.Value);
             }
 
             Console.WriteLine();
-            outputHeading("Average hits per second");
+            OutputHeading("Average hits per second");
             Console.WriteLine("{0:0}", hitsPerSecond.Values.Average());
 
             Console.WriteLine();
-            outputHeading("Average hits per second, by hour");
+            OutputHeading("Average hits per second, by hour");
             var groupedHourlyList = hitsPerSecond.GroupBy(u => u.Key.Hour)
                                       .Select(grp => new { GroupID = grp.Key, subList = grp.ToList() })
                                       .ToList();
@@ -137,28 +137,28 @@ namespace IISLogMuncher
             }
 
             Console.WriteLine();
-            outputHeading("Top " + topResults + " IP requests");
+            OutputHeading("Top " + topResults + " IP requests");
             foreach (var ip in ips.OrderByDescending(v => v.Value).Take(topResults))
             {
                 Console.WriteLine(ip.Key.PadRight(16) + ip.Value);
             }
 
             Console.WriteLine();
-            outputHeading("Top " + topResults + " 3 octet IP requests");
+            OutputHeading("Top " + topResults + " 3 octet IP requests");
             foreach (var ip in threeOctetsOfIP.OrderByDescending(v => v.Value).Take(topResults))
             {
                 Console.WriteLine(ip.Key.PadRight(16) + ip.Value);
             }
 
             Console.WriteLine();
-            outputHeading("Top " + topResults + " 2 octet IP requests");
+            OutputHeading("Top " + topResults + " 2 octet IP requests");
             foreach (var ip in twoOctetsOfIP.OrderByDescending(v => v.Value).Take(topResults))
             {
                 Console.WriteLine(ip.Key.PadRight(16) + ip.Value);
             }
 
             Console.WriteLine();
-            outputHeading("Top " + topResults + " popular stems");
+            OutputHeading("Top " + topResults + " popular stems");
             foreach (var popularPage in popularStems.OrderByDescending(v => v.Value).Take(topResults))
             {
                 Console.WriteLine(popularPage.Value);
@@ -167,18 +167,18 @@ namespace IISLogMuncher
             }
         }
 
-        private void outputHeading(string heading)
+        private void OutputHeading(string heading)
         {
             Console.WriteLine(heading);
             Console.WriteLine("=".PadLeft(heading.Length, '='));
         }
 
-        private void displayRecordCount(int c)
+        private void DisplayRecordCount(int c)
         {
-            outputHeading("Records: " + c);
+            OutputHeading("Records: " + c);
         }
 
-        private string squashIntoOctetsOfIPAddress(string ip, int octets)
+        private string SquashIntoOctetsOfIPAddress(string ip, int octets)
         {
             int pos = 0;
             for (int i = 0; i < octets; i++)

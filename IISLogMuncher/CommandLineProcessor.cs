@@ -36,10 +36,10 @@ namespace IISLogMuncher
 
             set
             {
-                if (value != null && areOnlyValidCharactersUsedForOptions(value))
+                if (value != null && AreOnlyValidCharactersUsedForOptions(value))
                 {
                     options = value;
-                    optionDictionary = buildOptionDictionary(options);
+                    optionDictionary = BuildOptionDictionary(options);
                 }
                 else
                 {
@@ -83,39 +83,39 @@ namespace IISLogMuncher
         /// <returns></returns>
         public CommandLineOptions ProcessArgs(string[] args)
         {
-            var newArgs = reconstructSquashedArgumentsIntoSpacedArguments(args);
+            var newArgs = ReconstructSquashedArgumentsIntoSpacedArguments(args);
 
             var clo = new CommandLineOptions();
 
-            setDefaultArgumentsIfAny(clo);
+            SetDefaultArgumentsIfAny(clo);
 
             for (int i = 0; i < newArgs.Count; i++)
             {
-                if (couldBeAnOption(newArgs[i]) && newArgs[i].Length > 1)
+                if (CouldBeAnOption(newArgs[i]) && newArgs[i].Length > 1)
                 {
-                    i = processPossibleOption(newArgs, clo, i);
+                    i = ProcessPossibleOption(newArgs, clo, i);
                 }
                 else
                 {
-                    processNonOption(newArgs, clo, i);
+                    ProcessNonOption(newArgs, clo, i);
                 }
             }
             return clo;
         }
 
-        private void setDefaultArgumentsIfAny(CommandLineOptions clo)
+        private void SetDefaultArgumentsIfAny(CommandLineOptions clo)
         {
             string setting;
             foreach (char o in this.Options)
             {
-                if (char.IsLetter(o) && (setting = readSetting(o + "OptionDefault")) != "Not Found")
+                if (char.IsLetter(o) && (setting = ReadSetting(o + "OptionDefault")) != "Not Found")
                 {
                     clo.SetOption(o, setting);
                 }
             }
         }
 
-        private string readSetting(string key)
+        private string ReadSetting(string key)
         {
             try
             {
@@ -136,7 +136,7 @@ namespace IISLogMuncher
         /// <param name="newArgs"></param>
         /// <param name="clo"></param>
         /// <param name="i"></param>
-        private void processNonOption(List<string> newArgs, CommandLineOptions clo, int i)
+        private void ProcessNonOption(List<string> newArgs, CommandLineOptions clo, int i)
         {
             clo.AddNonOption(newArgs[i]);
         }
@@ -149,12 +149,12 @@ namespace IISLogMuncher
         /// <param name="clo"></param>
         /// <param name="i"></param>
         /// <returns></returns>
-        private int processPossibleOption(List<string> newArgs, CommandLineOptions clo, int i)
+        private int ProcessPossibleOption(List<string> newArgs, CommandLineOptions clo, int i)
         {
             char optionCharacter = newArgs[i].ElementAt(1);
-            if (isKnownOption(optionCharacter))
+            if (IsKnownOption(optionCharacter))
             {
-                if (expectsOptionArgument(optionCharacter))
+                if (ExpectsOptionArgument(optionCharacter))
                 {
                     if (i < newArgs.Count - 1)
                     {
@@ -185,7 +185,7 @@ namespace IISLogMuncher
         /// </summary>
         /// <param name="v"></param>
         /// <returns></returns>
-        private bool couldBeAnOption(string v)
+        private bool CouldBeAnOption(string v)
         {
             if (!string.IsNullOrEmpty(v) && v.ElementAt(0) == OptionIndicator)
                 return true;
@@ -198,7 +198,7 @@ namespace IISLogMuncher
         /// </summary>
         /// <param name="listOfOptions"></param>
         /// <returns></returns>
-        private Dictionary<char, string> buildOptionDictionary(string listOfOptions)
+        private Dictionary<char, string> BuildOptionDictionary(string listOfOptions)
         {
             var od = new Dictionary<char, string>();
             for (int i = 0; i < listOfOptions.Length; i++)
@@ -220,7 +220,7 @@ namespace IISLogMuncher
         /// </summary>
         /// <param name="args"></param>
         /// <returns></returns>
-        private List<string> reconstructSquashedArgumentsIntoSpacedArguments(string[] args)
+        private List<string> ReconstructSquashedArgumentsIntoSpacedArguments(string[] args)
         {
             var modifiedArgs = new List<string>();
             for (int i = 0; i < args.Length; i++)
@@ -254,7 +254,7 @@ namespace IISLogMuncher
         /// </summary>
         /// <param name="option"></param>
         /// <returns></returns>
-        private bool isKnownOption(char option)
+        private bool IsKnownOption(char option)
         {
             if (optionDictionary == null)
             {
@@ -268,9 +268,9 @@ namespace IISLogMuncher
         /// </summary>
         /// <param name="option"></param>
         /// <returns></returns>
-        private bool expectsOptionArgument(char option)
+        private bool ExpectsOptionArgument(char option)
         {
-            if (isKnownOption(option))
+            if (IsKnownOption(option))
             {
                 string value = string.Empty;
                 optionDictionary.TryGetValue(option, out value);
@@ -287,7 +287,7 @@ namespace IISLogMuncher
         /// </summary>
         /// <param name="value"></param>
         /// <returns></returns>
-        private bool areOnlyValidCharactersUsedForOptions(string value)
+        private bool AreOnlyValidCharactersUsedForOptions(string value)
         {
             return Regex.Matches(value, @"^[a-zA-Z0-9:]*$").Count != 0;
         }
