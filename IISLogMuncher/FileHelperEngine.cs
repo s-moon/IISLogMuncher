@@ -11,16 +11,21 @@ namespace IISLogMuncher
 {
     public class FileHelperEngine
     {
+        #region class variables
         private static Logger logger = LogManager.GetCurrentClassLogger();
         private FileHelperEngine<IISLogEntry> engine;
         private CommandLineOptions clo;
+        #endregion
 
+        #region constructors
         public FileHelperEngine(CommandLineOptions clo)
         {
             engine = new FileHelperEngine<IISLogEntry>();
             this.clo = clo;
         }
+        #endregion
 
+        #region methods
         public void ProcessFileList()
         {
             SetEngineOptionsBasedOnCommandLine();
@@ -192,5 +197,6 @@ namespace IISLogMuncher
             }
             return ip.Substring(0, pos - 1);
         }
+        #endregion 
     }
 }

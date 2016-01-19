@@ -7,11 +7,13 @@ namespace IISLogMuncher
 {
     public class CommandLineOptions
     {
+        #region class variables
         // NLog
         private static Logger logger = LogManager.GetCurrentClassLogger();
 
         private Dictionary<char, string> options = null;
         private List<string> nonOptions = null;
+        #endregion
 
         #region constructors
         /// <summary>

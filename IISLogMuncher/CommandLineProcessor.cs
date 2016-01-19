@@ -10,6 +10,7 @@ namespace IISLogMuncher
 {
     public class CommandLineProcessor
     {
+        #region class variables
         // NLog
         private static Logger logger = LogManager.GetCurrentClassLogger();
 
@@ -22,6 +23,7 @@ namespace IISLogMuncher
         private const string OptionNoArgument = "";
 
         private string options;
+        #endregion
 
         #region properties
         /// <summary>
