@@ -41,27 +41,32 @@ namespace IISLogMuncher
             {
                 int result;
 
-                if (Int32.TryParse(clo.GetOption('s'), out result))
+                if (IsValidNumberAndGreaterThanX(clo.GetOption('s'), 0, out result))
                 {
-                    if (result > 0)
-                    {
-                        engine.Options.IgnoreFirstLines = result;
-                    }
-                    else
-                    {
-                        logger.Error("Error - the 's' option must be supplied with a number greater than zero.");
-                    }
+                    engine.Options.IgnoreFirstLines = result;
                 }
                 else
                 {
-                    logger.Error("Error - Unable to convert '" + clo.GetOption('s') + 
-                        "' into a number for the 's' option.");
+                    logger.Error("Error - Unable to convert '" + clo.GetOption('s') +
+                        "' into a number for the 's' option which is greater than 0.");
                 }
             }
 
             if (clo.IsOptionSet('i'))
             {
                 engine.Options.IgnoreEmptyLines = true;
+            }
+        }
+
+        private bool IsValidNumberAndGreaterThanX(string value, int greater, out int result)
+        {
+            if (Int32.TryParse(value, out result) && (result > greater))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
             }
         }
 
@@ -109,21 +114,14 @@ namespace IISLogMuncher
             {
                 int result;
 
-                if (Int32.TryParse(clo.GetOption('t'), out result))
+                if (IsValidNumberAndGreaterThanX(clo.GetOption('t'), 0, out result))
                 {
-                    if (result > 0)
-                    {
-                        topResults = result;
-                    }
-                    else
-                    {
-                        logger.Error("Error - the 't' option must be supplied with a number greater than zero.");
-                    } 
+                    engine.Options.IgnoreFirstLines = result;
                 }
                 else
                 {
                     logger.Error("Error - Unable to convert '" + clo.GetOption('t') +
-                        "' into a number for the 't' option.");
+                        "' into a number for the 't' option which is greater than 0.");
                 }
             }
 
