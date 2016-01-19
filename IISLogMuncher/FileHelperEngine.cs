@@ -39,7 +39,24 @@ namespace IISLogMuncher
         {
             if (clo.IsOptionSet('s'))
             {
-                engine.Options.IgnoreFirstLines = Int32.Parse(clo.GetOption('s'));
+                int result;
+
+                if (Int32.TryParse(clo.GetOption('s'), out result))
+                {
+                    if (result > 0)
+                    {
+                        engine.Options.IgnoreFirstLines = result;
+                    }
+                    else
+                    {
+                        logger.Error("Error - the 's' option must be supplied with a number greater than zero.");
+                    }
+                }
+                else
+                {
+                    logger.Error("Error - Unable to convert '" + clo.GetOption('s') + 
+                        "' into a number for the 's' option.");
+                }
             }
 
             if (clo.IsOptionSet('i'))
@@ -68,6 +85,7 @@ namespace IISLogMuncher
             catch (Exception ex)
             {
                 logger.Error("Oops. Something catastrophic happened so skipping file: " + file);
+                logger.Error("Here's the detailed error message in case you were wondering:");
                 logger.Error(ex);
             }
         }
@@ -89,7 +107,24 @@ namespace IISLogMuncher
 
             if (clo.IsOptionSet('t'))
             {
-                topResults = Int32.Parse(clo.GetOption('t'));
+                int result;
+
+                if (Int32.TryParse(clo.GetOption('t'), out result))
+                {
+                    if (result > 0)
+                    {
+                        topResults = result;
+                    }
+                    else
+                    {
+                        logger.Error("Error - the 't' option must be supplied with a number greater than zero.");
+                    } 
+                }
+                else
+                {
+                    logger.Error("Error - Unable to convert '" + clo.GetOption('t') +
+                        "' into a number for the 't' option.");
+                }
             }
 
             foreach (var entry in records)
