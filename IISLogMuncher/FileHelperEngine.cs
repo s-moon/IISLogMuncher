@@ -38,13 +38,13 @@ namespace IISLogMuncher
 
         private void SetEngineOptionsBasedOnCommandLine()
         {
+            int tmpIntResult;
+
             if (clo.IsOptionSet('s'))
             {
-                int result;
-
-                if (IsValidNumberAndGreaterThanX(clo.GetOption('s'), 0, out result))
+                if (IsValidNumberAndGreaterThanX(clo.GetOption('s'), 0, out tmpIntResult))
                 {
-                    engine.Options.IgnoreFirstLines = result;
+                    engine.Options.IgnoreFirstLines = tmpIntResult;
                 }
                 else
                 {
@@ -55,11 +55,9 @@ namespace IISLogMuncher
 
             if (clo.IsOptionSet('t'))
             {
-                int result;
-
-                if (IsValidNumberAndGreaterThanX(clo.GetOption('t'), 0, out result))
+                if (IsValidNumberAndGreaterThanX(clo.GetOption('t'), 0, out tmpIntResult))
                 {
-                    topResults = result;
+                    topResults = tmpIntResult;
                 }
                 else
                 {
