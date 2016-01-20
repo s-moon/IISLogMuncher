@@ -12,6 +12,9 @@ namespace IISLogMuncher
     public class FileHelperEngine
     {
         #region class variables
+        private const char skipOption = 's';
+        private const char topOption = 't';
+        private const char emptyLinesOption = 'e';
         private static Logger logger = LogManager.GetCurrentClassLogger();
         private FileHelperEngine<IISLogEntry> engine;
         private CommandLineOptions clo;
@@ -40,22 +43,22 @@ namespace IISLogMuncher
         {
             int tmpIntResult;
 
-            if (clo.IsOptionSet('s'))
+            if (clo.IsOptionSet(skipOption))
             {
-                if (IsValidNumberAndGreaterThanX(clo.GetOption('s'), 0, out tmpIntResult))
+                if (IsValidNumberAndGreaterThanX(clo.GetOption(skipOption), 0, out tmpIntResult))
                 {
                     engine.Options.IgnoreFirstLines = tmpIntResult;
                 }
                 else
                 {
-                    logger.Error("Error - Unable to convert '" + clo.GetOption('s') +
-                        "' into a number for the 's' option which is greater than 0.");
+                    logger.Error("Error - Unable to convert '" + clo.GetOption(skipOption) +
+                        "' into a number for the '" + skipOption + "' option which is greater than 0.");
                 }
             }
 
             if (clo.IsOptionSet('t'))
             {
-                if (IsValidNumberAndGreaterThanX(clo.GetOption('t'), 0, out tmpIntResult))
+                if (IsValidNumberAndGreaterThanX(clo.GetOption(topOption), 0, out tmpIntResult))
                 {
                     topResults = tmpIntResult;
                 }
@@ -74,14 +77,12 @@ namespace IISLogMuncher
 
         private bool IsValidNumberAndGreaterThanX(string value, int greater, out int result)
         {
+            bool isValid = false;
             if (Int32.TryParse(value, out result) && (result > greater))
             {
-                return true;
+                isValid = true;
             }
-            else
-            {
-                return false;
-            }
+            return isValid;
         }
 
         private void ProcessFile(string file)
