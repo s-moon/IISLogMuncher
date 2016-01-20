@@ -15,6 +15,7 @@ namespace IISLogMuncher
         private static Logger logger = LogManager.GetCurrentClassLogger();
         private FileHelperEngine<IISLogEntry> engine;
         private CommandLineOptions clo;
+        private int topResults = 10;
         #endregion
 
         #region constructors
@@ -49,6 +50,21 @@ namespace IISLogMuncher
                 {
                     logger.Error("Error - Unable to convert '" + clo.GetOption('s') +
                         "' into a number for the 's' option which is greater than 0.");
+                }
+            }
+
+            if (clo.IsOptionSet('t'))
+            {
+                int result;
+
+                if (IsValidNumberAndGreaterThanX(clo.GetOption('t'), 0, out result))
+                {
+                    topResults = result;
+                }
+                else
+                {
+                    logger.Error("Error - Unable to convert '" + clo.GetOption('t') +
+                        "' into a number for the 't' option which is greater than 0.");
                 }
             }
 
@@ -102,27 +118,11 @@ namespace IISLogMuncher
             Dictionary<string, int> threeOctetsOfIP = new Dictionary<string, int>();
             Dictionary<string, int> popularStems = new Dictionary<string, int>();
             Dictionary<DateTime, int> hitsPerSecond = new Dictionary<DateTime, int>();
-            int topResults = 10;
             int val;
 
             if (clo.IsOptionSet('c'))
             {
                 DisplayRecordCount(records.Count());
-            }
-
-            if (clo.IsOptionSet('t'))
-            {
-                int result;
-
-                if (IsValidNumberAndGreaterThanX(clo.GetOption('t'), 0, out result))
-                {
-                    engine.Options.IgnoreFirstLines = result;
-                }
-                else
-                {
-                    logger.Error("Error - Unable to convert '" + clo.GetOption('t') +
-                        "' into a number for the 't' option which is greater than 0.");
-                }
             }
 
             foreach (var entry in records)
