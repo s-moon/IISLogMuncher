@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using static IISLogMuncher.Util;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -217,12 +218,18 @@ namespace IISLogMuncher
 
         private string SquashIPAddressIntoOctets(string ip, int octets)
         {
+            if (octets < 1 || octets > 3)
+            {
+                LogAndThrowException(new ArgumentException("Parameter octets must be between 1 and 3, inclusive."));
+            }
+
             int pos = 0;
             for (int i = 0; i < octets; i++)
             {
                 pos = ip.IndexOf('.', pos);
                 if (pos == -1)
                 {
+                    logger.Error("This IP should have had a decimal point, but didn't when requesting the " + i + " of " + octets + " octets: " + ip);
                     return string.Empty;
                 }
                 pos++;
