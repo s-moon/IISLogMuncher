@@ -15,6 +15,10 @@ namespace IISLogMuncher
         #endregion
 
         #region methods
+        /// <summary>
+        /// Used to both log errors but also throw exceptions should an error occur.
+        /// </summary>
+        /// <param name="ex"></param>
         public static void LogAndThrowException(Exception ex)
         {
             logger.Error(ex.Message);
