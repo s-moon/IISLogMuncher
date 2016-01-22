@@ -23,6 +23,10 @@ namespace IISLogMuncher
         #endregion
 
         #region constructors
+        /// <summary>
+        /// Main constructor.
+        /// </summary>
+        /// <param name="clo"></param>
         public FileHelperEngine(CommandLineOptions clo)
         {
             engine = new FileHelperEngine<IISLogEntry>();
@@ -31,6 +35,9 @@ namespace IISLogMuncher
         #endregion
 
         #region methods
+        /// <summary>
+        /// Go through each of the files passed on the command line and process them.
+        /// </summary>
         public void ProcessFileList()
         {
             SetEngineOptionsBasedOnCommandLine();
@@ -40,6 +47,10 @@ namespace IISLogMuncher
             }
         }
 
+        /// <summary>
+        /// Some of the engine options can be changed via the command line. This method
+        /// performs that function.
+        /// </summary>
         private void SetEngineOptionsBasedOnCommandLine()
         {
             int tmpIntResult;
@@ -76,6 +87,14 @@ namespace IISLogMuncher
             }
         }
 
+        /// <summary>
+        /// Some command line options need integer arguments. This method ensures that they are
+        /// valid and greater than a certain number. Usually zero in practice.
+        /// </summary>
+        /// <param name="value"></param>
+        /// <param name="greater"></param>
+        /// <param name="result"></param>
+        /// <returns></returns>
         private bool IsValidNumberAndGreaterThanX(string value, int greater, out int result)
         {
             bool isValid = false;
@@ -86,6 +105,10 @@ namespace IISLogMuncher
             return isValid;
         }
 
+        /// <summary>
+        /// Process one given file. That is, produce stats on it.
+        /// </summary>
+        /// <param name="file"></param>
         private void ProcessFile(string file)
         {
             logger.Info("[" + file + "]");
@@ -111,6 +134,10 @@ namespace IISLogMuncher
             }
         }
 
+        /// <summary>
+        /// Generate all the stats from the imported file.
+        /// </summary>
+        /// <param name="records"></param>
         private void ProvideFileStats(IISLogEntry[] records)
         {
             Dictionary<string, int> ips = new Dictionary<string, int>();
@@ -205,17 +232,34 @@ namespace IISLogMuncher
             }
         }
 
+        /// <summary>
+        /// Produce a heading. That is a lump of text with enough equals ('=') characters
+        /// underneath to give the impression of underlining.
+        /// </summary>
+        /// <param name="heading"></param>
         private void OutputHeading(string heading)
         {
             Console.WriteLine(heading);
             Console.WriteLine("=".PadLeft(heading.Length, '='));
         }
 
+        /// <summary>
+        /// Display the number of records in this imported file.
+        /// </summary>
+        /// <param name="c"></param>
         private void DisplayRecordCount(int c)
         {
             OutputHeading("Records: " + c);
         }
 
+        /// <summary>
+        /// For the purposes of reporting, we want to be able to see IP addresses based on the
+        /// first, second or third group of numbers. E.g. 1.2.3.4. This function removes anything 
+        /// beyond the octet we are interested in.
+        /// </summary>
+        /// <param name="ip"></param>
+        /// <param name="octets"></param>
+        /// <returns></returns>
         private string SquashIPAddressIntoOctets(string ip, int octets)
         {
             if (octets < 1 || octets > 3)
