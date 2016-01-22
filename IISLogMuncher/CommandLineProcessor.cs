@@ -105,6 +105,17 @@ namespace IISLogMuncher
             return clo;
         }
 
+        /// <summary>
+        /// The app.config file allows us to set defaults for some of the options so
+        /// that we don't need to re-apply them on the command line. Each is stored
+        /// within AppSettings and takes the form:
+        /// 
+        ///     tOptionDefault <value>
+        ///     
+        /// if it is the 't' option, for example. Any empty values signify options that
+        /// do not need an argument.
+        /// </summary>
+        /// <param name="clo"></param>
         private void SetDefaultArgumentsIfAny(CommandLineOptions clo)
         {
             string setting;
@@ -117,6 +128,11 @@ namespace IISLogMuncher
             }
         }
 
+        /// <summary>
+        /// Reads a setting from the app.config file based on the supplied key.
+        /// </summary>
+        /// <param name="key"></param>
+        /// <returns></returns>
         private string ReadSetting(string key)
         {
             try
