@@ -15,7 +15,7 @@ namespace IISLogMuncher
         #region class variables
         private const char skipOption = 's';
         private const char topOption = 't';
-        private const char emptyLinesOption = 'e';
+        private const char emptyLinesOption = 'i';
         private static Logger logger = LogManager.GetCurrentClassLogger();
         private FileHelperEngine<IISLogEntry> engine;
         private CommandLineOptions clo;
@@ -81,7 +81,7 @@ namespace IISLogMuncher
                 }
             }
 
-            if (clo.IsOptionSet('i'))
+            if (clo.IsOptionSet(emptyLinesOption))
             {
                 engine.Options.IgnoreEmptyLines = true;
             }
