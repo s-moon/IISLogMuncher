@@ -68,7 +68,7 @@ namespace IISLogMuncher
                 }
             }
 
-            if (clo.IsOptionSet('t'))
+            if (clo.IsOptionSet(topOption))
             {
                 if (IsValidNumberAndGreaterThanX(clo.GetOption(topOption), 0, out tmpIntResult))
                 {
@@ -76,8 +76,8 @@ namespace IISLogMuncher
                 }
                 else
                 {
-                    logger.Error("Error - Unable to convert '" + clo.GetOption('t') +
-                        "' into a number for the 't' option which is greater than 0.");
+                    logger.Error("Error - Unable to convert '" + clo.GetOption(topOption) +
+                        "' into a number for the '" + topOption + "' option which is greater than 0.");
                 }
             }
 
@@ -114,8 +114,8 @@ namespace IISLogMuncher
             logger.Info("[" + file + "]");
             try
             {
-                //var records = engine.ReadFile(@"E:\Projects\Open Source\IISLogMuncher\" + file);
-                var records = engine.ReadFile(@"D:\StephenMoon\GitHub\IISLogMuncher\" + file);
+                var records = engine.ReadFile(@"E:\Projects\Open Source\IISLogMuncher\" + file);
+                //var records = engine.ReadFile(@"D:\StephenMoon\GitHub\IISLogMuncher\" + file);
                 ProvideFileStats(records);
             }
             catch (DirectoryNotFoundException)
