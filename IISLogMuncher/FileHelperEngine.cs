@@ -16,6 +16,7 @@ namespace IISLogMuncher
         private const char skipOption = 's';
         private const char topOption = 't';
         private const char emptyLinesOption = 'i';
+        private const char countRecordsOption = 'c';
         private static Logger logger = LogManager.GetCurrentClassLogger();
         private FileHelperEngine<IISLogEntry> engine;
         private CommandLineOptions clo;
@@ -147,7 +148,7 @@ namespace IISLogMuncher
             Dictionary<DateTime, int> hitsPerSecond = new Dictionary<DateTime, int>();
             int val;
 
-            if (clo.IsOptionSet('c'))
+            if (clo.IsOptionSet(countRecordsOption))
             {
                 DisplayRecordCount(records.Count());
             }
