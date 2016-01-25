@@ -5,18 +5,16 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using static IISLogMuncher.Util;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace IISLogMuncher
 {
     public class FileHelperEngine
     {
         #region class variables
-        private const char skipOption = 's';
-        private const char topOption = 't';
-        private const char emptyLinesOption = 'i';
-        private const char countRecordsOption = 'c';
+        private const char SkipOption = 's';
+        private const char TopOption = 't';
+        private const char EmptyLinesOption = 'i';
+        private const char CountRecordsOption = 'c';
         private static Logger logger = LogManager.GetCurrentClassLogger();
         private FileHelperEngine<IISLogEntry> engine;
         private CommandLineOptions clo;
@@ -56,33 +54,33 @@ namespace IISLogMuncher
         {
             int tmpIntResult;
 
-            if (clo.IsOptionSet(skipOption))
+            if (clo.IsOptionSet(SkipOption))
             {
-                if (IsValidNumberAndGreaterThanX(clo.GetOption(skipOption), 0, out tmpIntResult))
+                if (IsValidNumberAndGreaterThanX(clo.GetOption(SkipOption), 0, out tmpIntResult))
                 {
                     engine.Options.IgnoreFirstLines = tmpIntResult;
                 }
                 else
                 {
-                    logger.Error("Error - Unable to convert '" + clo.GetOption(skipOption) +
-                        "' into a number for the '" + skipOption + "' option which is greater than 0.");
+                    logger.Error("Error - Unable to convert '" + clo.GetOption(SkipOption) +
+                        "' into a number for the '" + SkipOption + "' option which is greater than 0.");
                 }
             }
 
-            if (clo.IsOptionSet(topOption))
+            if (clo.IsOptionSet(TopOption))
             {
-                if (IsValidNumberAndGreaterThanX(clo.GetOption(topOption), 0, out tmpIntResult))
+                if (IsValidNumberAndGreaterThanX(clo.GetOption(TopOption), 0, out tmpIntResult))
                 {
                     topResults = tmpIntResult;
                 }
                 else
                 {
-                    logger.Error("Error - Unable to convert '" + clo.GetOption(topOption) +
-                        "' into a number for the '" + topOption + "' option which is greater than 0.");
+                    logger.Error("Error - Unable to convert '" + clo.GetOption(TopOption) +
+                        "' into a number for the '" + TopOption + "' option which is greater than 0.");
                 }
             }
 
-            if (clo.IsOptionSet(emptyLinesOption))
+            if (clo.IsOptionSet(EmptyLinesOption))
             {
                 engine.Options.IgnoreEmptyLines = true;
             }
@@ -148,7 +146,7 @@ namespace IISLogMuncher
             Dictionary<DateTime, int> hitsPerSecond = new Dictionary<DateTime, int>();
             int val;
 
-            if (clo.IsOptionSet(countRecordsOption))
+            if (clo.IsOptionSet(CountRecordsOption))
             {
                 DisplayRecordCount(records.Count());
             }
