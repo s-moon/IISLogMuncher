@@ -165,48 +165,17 @@ namespace IISLogMuncher
                     hitsPerSecond.Add(entry.time, 1);
             }
 
-            Console.WriteLine();
-            OutputHeading("Top " + topResults + " hits per second");
-            foreach (var hits in hitsPerSecond.OrderByDescending(v => v.Value).Take(topResults))
-            {
-                Console.WriteLine(hits.Key + " " + hits.Value);
-            }
+            HitsPerSecondSectionOutput(hitsPerSecond);
+            AverageHitsPerSecondSectionOutput(hitsPerSecond);
+            AverageHitsPerSecondPerHourSectionOutput(hitsPerSecond);
+            IPHitsSectionOutput(ips);
+            ThreeOctetIPHitsSectionOutput(threeOctetsOfIP);
+            TwoOctetIPHitsSectionOutput(twoOctetsOfIP);
+            PopularStemsSectionOutput(popularStems);
+        }
 
-            Console.WriteLine();
-            OutputHeading("Average hits per second");
-            Console.WriteLine("{0:0}", hitsPerSecond.Values.Average());
-
-            Console.WriteLine();
-            OutputHeading("Average hits per second, by hour");
-            var groupedHourlyList = hitsPerSecond.GroupBy(u => u.Key.Hour)
-                                      .Select(grp => new { GroupID = grp.Key, subList = grp.ToList() })
-                                      .ToList();
-            foreach (var hourlyHits in groupedHourlyList)
-            {
-                Console.WriteLine("{0,2:D2}-{1,2:D2} : {2:0}", hourlyHits.GroupID, hourlyHits.GroupID+ 1, hourlyHits.subList.Average(c => c.Value));
-            }
-
-            Console.WriteLine();
-            OutputHeading("Top " + topResults + " IP requests");
-            foreach (var ip in ips.OrderByDescending(v => v.Value).Take(topResults))
-            {
-                Console.WriteLine(ip.Key.PadRight(16) + ip.Value);
-            }
-
-            Console.WriteLine();
-            OutputHeading("Top " + topResults + " 3 octet IP requests");
-            foreach (var ip in threeOctetsOfIP.OrderByDescending(v => v.Value).Take(topResults))
-            {
-                Console.WriteLine(ip.Key.PadRight(16) + ip.Value);
-            }
-
-            Console.WriteLine();
-            OutputHeading("Top " + topResults + " 2 octet IP requests");
-            foreach (var ip in twoOctetsOfIP.OrderByDescending(v => v.Value).Take(topResults))
-            {
-                Console.WriteLine(ip.Key.PadRight(16) + ip.Value);
-            }
-
+        private void PopularStemsSectionOutput(Dictionary<string, int> popularStems)
+        {
             Console.WriteLine();
             OutputHeading("Top " + topResults + " popular stems");
             foreach (var popularPage in popularStems.OrderByDescending(v => v.Value).Take(topResults))
@@ -214,6 +183,66 @@ namespace IISLogMuncher
                 Console.WriteLine(popularPage.Value);
                 Console.WriteLine(popularPage.Key);
                 Console.WriteLine("~-~-");
+            }
+        }
+
+        private void TwoOctetIPHitsSectionOutput(Dictionary<string, int> twoOctetsOfIP)
+        {
+            Console.WriteLine();
+            OutputHeading("Top " + topResults + " 2 octet IP requests");
+            foreach (var ip in twoOctetsOfIP.OrderByDescending(v => v.Value).Take(topResults))
+            {
+                Console.WriteLine(ip.Key.PadRight(16) + ip.Value);
+            }
+        }
+
+        private void ThreeOctetIPHitsSectionOutput(Dictionary<string, int> threeOctetsOfIP)
+        {
+            Console.WriteLine();
+            OutputHeading("Top " + topResults + " 3 octet IP requests");
+            foreach (var ip in threeOctetsOfIP.OrderByDescending(v => v.Value).Take(topResults))
+            {
+                Console.WriteLine(ip.Key.PadRight(16) + ip.Value);
+            }
+        }
+
+        private void IPHitsSectionOutput(Dictionary<string, int> ips)
+        {
+            Console.WriteLine();
+            OutputHeading("Top " + topResults + " IP requests");
+            foreach (var ip in ips.OrderByDescending(v => v.Value).Take(topResults))
+            {
+                Console.WriteLine(ip.Key.PadRight(16) + ip.Value);
+            }
+        }
+
+        private void AverageHitsPerSecondPerHourSectionOutput(Dictionary<DateTime, int> hitsPerSecond)
+        {
+            Console.WriteLine();
+            OutputHeading("Average hits per second, by hour");
+            var groupedHourlyList = hitsPerSecond.GroupBy(u => u.Key.Hour)
+                                      .Select(grp => new { GroupID = grp.Key, subList = grp.ToList() })
+                                      .ToList();
+            foreach (var hourlyHits in groupedHourlyList)
+            {
+                Console.WriteLine("{0,2:D2}-{1,2:D2} : {2:0}", hourlyHits.GroupID, hourlyHits.GroupID + 1, hourlyHits.subList.Average(c => c.Value));
+            }
+        }
+
+        private void AverageHitsPerSecondSectionOutput(Dictionary<DateTime, int> hitsPerSecond)
+        {
+            Console.WriteLine();
+            OutputHeading("Average hits per second");
+            Console.WriteLine("{0:0}", hitsPerSecond.Values.Average());
+        }
+
+        private void HitsPerSecondSectionOutput(Dictionary<DateTime, int> hitsPerSecond)
+        {
+            Console.WriteLine();
+            OutputHeading("Top " + topResults + " hits per second");
+            foreach (var hits in hitsPerSecond.OrderByDescending(v => v.Value).Take(topResults))
+            {
+                Console.WriteLine(hits.Key + " " + hits.Value);
             }
         }
 
