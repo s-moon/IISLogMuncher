@@ -113,8 +113,8 @@ namespace IISLogMuncher
             logger.Info("[" + file + "]");
             try
             {
-                var records = engine.ReadFile(@"E:\Projects\Open Source\IISLogMuncher\" + file);
-                //var records = engine.ReadFile(@"D:\StephenMoon\GitHub\IISLogMuncher\" + file);
+                //var records = engine.ReadFile(@"E:\Projects\Open Source\IISLogMuncher\" + file);
+                var records = engine.ReadFile(@"D:\StephenMoon\GitHub\IISLogMuncher\" + file);
                 ProvideFileStats(records);
             }
             catch (DirectoryNotFoundException)
@@ -146,11 +146,6 @@ namespace IISLogMuncher
             Dictionary<DateTime, int> hitsPerSecond = new Dictionary<DateTime, int>();
             int val;
 
-            if (clo.IsOptionSet(CountRecordsOption))
-            {
-                DisplayRecordCount(records.Count());
-            }
-
             foreach (var entry in records)
             {
                 AddEntryToDictionary(ips, entry.c_ip);
@@ -164,12 +159,23 @@ namespace IISLogMuncher
                     hitsPerSecond.Add(entry.time, 1);
             }
 
+            if (clo.IsOptionSet(CountRecordsOption))
+            {
+                DisplayRecordCount(records.Count());
+            }
+
             HitsPerSecondSectionOutput(hitsPerSecond);
+            //
             AverageHitsPerSecondSectionOutput(hitsPerSecond);
+            //
             AverageHitsPerSecondPerHourSectionOutput(hitsPerSecond);
+            //
             IPHitsSectionOutput(ips);
+            //
             ThreeOctetIPHitsSectionOutput(threeOctetsOfIP);
+            //
             TwoOctetIPHitsSectionOutput(twoOctetsOfIP);
+            //
             PopularStemsSectionOutput(popularStems);
         }
 
