@@ -154,25 +154,10 @@ namespace IISLogMuncher
 
             foreach (var entry in records)
             {
-                if (ips.TryGetValue(entry.c_ip, out val))
-                    ips[entry.c_ip]++;
-                else
-                    ips.Add(entry.c_ip, 1);
-
-                if (twoOctetsOfIP.TryGetValue(SquashIPAddressIntoOctets(entry.c_ip, 2), out val))
-                    twoOctetsOfIP[SquashIPAddressIntoOctets(entry.c_ip, 2)]++;
-                else
-                    twoOctetsOfIP.Add(SquashIPAddressIntoOctets(entry.c_ip, 2), 1);
-
-                if (threeOctetsOfIP.TryGetValue(SquashIPAddressIntoOctets(entry.c_ip, 3), out val))
-                    threeOctetsOfIP[SquashIPAddressIntoOctets(entry.c_ip, 3)]++;
-                else
-                    threeOctetsOfIP.Add(SquashIPAddressIntoOctets(entry.c_ip, 3), 1);
-
-                if (popularStems.TryGetValue(entry.cs_uri_stem, out val))
-                    popularStems[entry.cs_uri_stem]++;
-                else
-                    popularStems.Add(entry.cs_uri_stem, 1);
+                AddEntryToDictionary(ips, entry.c_ip);
+                AddEntryToDictionary(twoOctetsOfIP, SquashIPAddressIntoOctets(entry.c_ip, 2));
+                AddEntryToDictionary(threeOctetsOfIP, SquashIPAddressIntoOctets(entry.c_ip, 3));
+                AddEntryToDictionary(popularStems, entry.cs_uri_stem);
 
                 if (hitsPerSecond.TryGetValue(entry.time, out val))
                     hitsPerSecond[entry.time]++;
@@ -230,6 +215,16 @@ namespace IISLogMuncher
                 Console.WriteLine(popularPage.Key);
                 Console.WriteLine("~-~-");
             }
+        }
+
+        private void AddEntryToDictionary(Dictionary<string, int> dict, string value)
+        {
+            int val;
+
+            if (dict.TryGetValue(value, out val))
+                dict[value]++;
+            else
+                dict.Add(value, 1);
         }
 
         /// <summary>
