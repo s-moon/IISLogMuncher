@@ -51,4 +51,4 @@ Display the help information and exit.
 * [NLog](http://nlog-project.org/)
 * [NUnit](http://www.nunit.org/)
 
-Written by Stephen Moon, 2015 (stephen@logicalmoon.com)
+Written by Stephen Moon, 2016 (stephen@logicalmoon.com)
