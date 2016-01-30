@@ -25,6 +25,19 @@ iislogmuncher [options] filelist
 -i: ignore blank lines
 -s <number>: number of lines to skip at the start of the file
 -t <number>: how many records to show in summaries
+
+## Example Usage
+iislogmuncher -c -s 2 input.log
+
+Show a count of the number of records, skip the first 2 lines of the file and use input.log as the input file.
+
+iislogmuncher -i -t5 log1.log log2.log
+
+Ignore any blank lines in the files and show the top 5 entries for the stats. Use two files for input and report on each separately.
+
+iislogmuncher -h 
+
+Display the help information and exit.
 ```
 ## Example Output
 
