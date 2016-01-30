@@ -17,7 +17,7 @@ Of course, a real one would be soooooo much larger!
 2015-09-03 00:00:00 GET /magic.aspx - 443 - 123.123.123.123 - 200 0 0 3797 31
 ```
 
-## Usage
+## Command Line Options
 ```
 iislogmuncher [options] filelist
 -c: count number of records in the file
@@ -25,8 +25,10 @@ iislogmuncher [options] filelist
 -i: ignore blank lines
 -s <number>: number of lines to skip at the start of the file
 -t <number>: how many records to show in summaries
+```
 
 ## Example Usage
+```
 iislogmuncher -c -s 2 input.log
 
 Show a count of the number of records, skip the first 2 lines of the file and use input.log as the input file.
