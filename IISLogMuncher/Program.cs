@@ -16,7 +16,7 @@ namespace IISLogMuncher
         {
             logger.Info("IIS Log Muncher (" + Assembly.GetExecutingAssembly().GetName().Version.ToString() + ")" + " starting.");
 
-            var clp = new CommandLineProcessor("chis:t:");
+            var clp = new CommandLineProcessor("achis:t:");
             var clo = clp.ProcessArgs(args);
 
             if (clo.IsOptionSet('h'))
@@ -39,6 +39,7 @@ namespace IISLogMuncher
             Console.WriteLine("IIS Log Muncher v" + version.Major + "." + version.Minor);
             Console.WriteLine();
             Console.WriteLine("Options:");
+            Console.WriteLine("-a".PadLeft(leftPadding, ' ') + " : show all records");
             Console.WriteLine("-c".PadLeft(leftPadding, ' ') + " : count number of records");
             Console.WriteLine("-h".PadLeft(leftPadding, ' ') + " : this help text");
             Console.WriteLine("-i".PadLeft(leftPadding, ' ') + " : ignore empty lines");

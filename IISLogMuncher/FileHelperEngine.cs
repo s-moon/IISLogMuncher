@@ -11,14 +11,17 @@ namespace IISLogMuncher
     public class FileHelperEngine
     {
         #region class variables
+        private const char AllOption = 'a';
+        private const char CountRecordsOption = 'c';
+        private const char EmptyLinesOption = 'i';
         private const char SkipOption = 's';
         private const char TopOption = 't';
-        private const char EmptyLinesOption = 'i';
-        private const char CountRecordsOption = 'c';
+        
         private static Logger logger = LogManager.GetCurrentClassLogger();
         private FileHelperEngine<IISLogEntry> engine;
         private CommandLineOptions clo;
-        private int topResults = 10;
+        private int topResults = 0;
+        private int totalRecords = 0;
         #endregion
 
         #region constructors
@@ -67,7 +70,7 @@ namespace IISLogMuncher
                 }
             }
 
-            if (clo.IsOptionSet(TopOption))
+            if (!clo.IsOptionSet(AllOption) && clo.IsOptionSet(TopOption))
             {
                 if (IsValidNumberAndGreaterThanX(clo.GetOption(TopOption), 0, out tmpIntResult))
                 {
@@ -115,6 +118,7 @@ namespace IISLogMuncher
             {
                 //var records = engine.ReadFile(@"E:\Projects\Open Source\IISLogMuncher\" + file);
                 var records = engine.ReadFile(@"D:\StephenMoon\GitHub\IISLogMuncher\" + file);
+                totalRecords = records.Count();
                 ProvideFileStats(records);
             }
             catch (DirectoryNotFoundException)
@@ -147,6 +151,11 @@ namespace IISLogMuncher
             Dictionary<DateTime, int> hitsPerSecond = new Dictionary<DateTime, int>();
             int val;
 
+            if (clo.IsOptionSet(AllOption))
+            {
+                topResults = totalRecords;
+            }
+
             foreach (var entry in records)
             {
                 AddEntryToDictionary(ips, entry.c_ip);
@@ -163,7 +172,7 @@ namespace IISLogMuncher
 
             if (clo.IsOptionSet(CountRecordsOption))
             {
-                DisplayRecordCount(records.Count());
+                DisplayRecordCount(totalRecords);
             }
 
             HitsPerSecondSectionOutput(hitsPerSecond);
@@ -186,7 +195,7 @@ namespace IISLogMuncher
         private void PopularQueriesSectionOutput(Dictionary<string, int> popularQueries)
         {
             Console.WriteLine();
-            OutputHeading("Top " + topResults + " popular queries");
+            OutputHeading((clo.IsOptionSet(AllOption) ? "All" : ("Top " + topResults)) + " popular queries");
             foreach (var popularQuery in popularQueries.OrderByDescending(v => v.Value).Take(topResults))
             {
                 Console.WriteLine(popularQuery.Key);
@@ -196,7 +205,7 @@ namespace IISLogMuncher
         private void PopularStemsSectionOutput(Dictionary<string, int> popularStems)
         {
             Console.WriteLine();
-            OutputHeading("Top " + topResults + " popular stems");
+            OutputHeading((clo.IsOptionSet(AllOption) ? "All" : ("Top " + topResults)) + " popular stems");
             foreach (var popularPage in popularStems.OrderByDescending(v => v.Value).Take(topResults))
             {
                 Console.WriteLine(popularPage.Value);
@@ -208,7 +217,7 @@ namespace IISLogMuncher
         private void TwoOctetIPHitsSectionOutput(Dictionary<string, int> twoOctetsOfIP)
         {
             Console.WriteLine();
-            OutputHeading("Top " + topResults + " 2 octet IP requests");
+            OutputHeading((clo.IsOptionSet(AllOption) ? "All" : ("Top " + topResults)) + " 2 octet IP requests");
             foreach (var ip in twoOctetsOfIP.OrderByDescending(v => v.Value).Take(topResults))
             {
                 Console.WriteLine(ip.Key.PadRight(16) + ip.Value);
@@ -218,7 +227,7 @@ namespace IISLogMuncher
         private void ThreeOctetIPHitsSectionOutput(Dictionary<string, int> threeOctetsOfIP)
         {
             Console.WriteLine();
-            OutputHeading("Top " + topResults + " 3 octet IP requests");
+            OutputHeading((clo.IsOptionSet(AllOption) ? "All" : ("Top " + topResults)) + " 3 octet IP requests");
             foreach (var ip in threeOctetsOfIP.OrderByDescending(v => v.Value).Take(topResults))
             {
                 Console.WriteLine(ip.Key.PadRight(16) + ip.Value);
@@ -228,7 +237,7 @@ namespace IISLogMuncher
         private void IPHitsSectionOutput(Dictionary<string, int> ips)
         {
             Console.WriteLine();
-            OutputHeading("Top " + topResults + " IP requests");
+            OutputHeading((clo.IsOptionSet(AllOption) ? "All" : ("Top " + topResults)) + " IP requests");
             foreach (var ip in ips.OrderByDescending(v => v.Value).Take(topResults))
             {
                 Console.WriteLine(ip.Key.PadRight(16) + ip.Value);
@@ -258,7 +267,7 @@ namespace IISLogMuncher
         private void HitsPerSecondSectionOutput(Dictionary<DateTime, int> hitsPerSecond)
         {
             Console.WriteLine();
-            OutputHeading("Top " + topResults + " hits per second");
+            OutputHeading((clo.IsOptionSet(AllOption) ? "All" : ("Top " + topResults)) + " hits per second");
             foreach (var hits in hitsPerSecond.OrderByDescending(v => v.Value).Take(topResults))
             {
                 Console.WriteLine(hits.Key + " " + hits.Value);
