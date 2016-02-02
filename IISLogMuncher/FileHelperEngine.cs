@@ -143,6 +143,7 @@ namespace IISLogMuncher
             Dictionary<string, int> twoOctetsOfIP = new Dictionary<string, int>();
             Dictionary<string, int> threeOctetsOfIP = new Dictionary<string, int>();
             Dictionary<string, int> popularStems = new Dictionary<string, int>();
+            Dictionary<string, int> popularQueries = new Dictionary<string, int>();
             Dictionary<DateTime, int> hitsPerSecond = new Dictionary<DateTime, int>();
             int val;
 
@@ -152,6 +153,7 @@ namespace IISLogMuncher
                 AddEntryToDictionary(twoOctetsOfIP, SquashIPAddressIntoOctets(entry.c_ip, 2));
                 AddEntryToDictionary(threeOctetsOfIP, SquashIPAddressIntoOctets(entry.c_ip, 3));
                 AddEntryToDictionary(popularStems, entry.cs_uri_stem);
+                AddEntryToDictionary(popularQueries, entry.cs_uri_query);
 
                 if (hitsPerSecond.TryGetValue(entry.time, out val))
                     hitsPerSecond[entry.time]++;
@@ -177,6 +179,18 @@ namespace IISLogMuncher
             TwoOctetIPHitsSectionOutput(twoOctetsOfIP);
             //
             PopularStemsSectionOutput(popularStems);
+            //
+            PopularQueriesSectionOutput(popularQueries);
+        }
+
+        private void PopularQueriesSectionOutput(Dictionary<string, int> popularQueries)
+        {
+            Console.WriteLine();
+            OutputHeading("Top " + topResults + " popular queries");
+            foreach (var popularQuery in popularQueries.OrderByDescending(v => v.Value).Take(topResults))
+            {
+                Console.WriteLine(popularQuery.Key);
+            }
         }
 
         private void PopularStemsSectionOutput(Dictionary<string, int> popularStems)
