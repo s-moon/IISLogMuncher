@@ -20,11 +20,11 @@ Of course, a real one would be soooooo much larger!
 ## Command Line Options
 ```
 iislogmuncher [options] filelist
--c: count number of records in the file
--h: show help text
--i: ignore blank lines
--s <number>: number of lines to skip at the start of the file
--t <number>: how many records to show in summaries
+    -c: count number of records in the file
+    -h: show help text
+    -i: ignore blank lines
+    -s <number>: number of lines to skip at the start of the file
+    -t <number>: how many records to show in summaries
 ```
 
 ## Example Usage
