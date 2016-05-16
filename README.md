@@ -1,4 +1,4 @@
-# IISLogMuncher
+# :stew: IISLogMuncher
 A small Windows console utility to report useful information about IIS logs.
 
 ## Introduction
